@@ -1,2 +1,10 @@
-
 .DS_Store
+.keys
+.kube/cache
+.dotnet
+.ssh
+.vscode-server
+apt-get
+helm
+install
+update

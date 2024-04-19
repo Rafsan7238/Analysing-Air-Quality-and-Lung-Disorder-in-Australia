@@ -1,0 +1,10 @@
+version: "3.10"
+services:
+  work-env:
+    tty: true
+    container_name: comp90024-a2
+    build: . 
+    volumes:
+      - ./:/root/
+    #env_file:
+    #  - path to your env file
