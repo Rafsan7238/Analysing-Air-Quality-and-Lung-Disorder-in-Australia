@@ -22,6 +22,7 @@ RUN apt-get install helm
 # for fission
 
 RUN OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+RUN export FISSION_VERSION='1.20.0'
 RUN curl -Lo fission https://github.com/fission/fission/releases/download/v$FISSION_VERSION/fission-v$FISSION_VERSION-$OS-amd64 \
    && chmod +x fission && mv fission /usr/local/bin/
 
