@@ -35,3 +35,5 @@ RUN chmod 644 /etc/apt/sources.list.d/kubernetes.list
 
 RUN apt-get update
 RUN apt-get install -y kubectl
+
+RUN apt-get install zip
