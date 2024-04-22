@@ -33,7 +33,7 @@ RUN chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 RUN echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list
 RUN chmod 644 /etc/apt/sources.list.d/kubernetes.list
 
+RUN apt-get install -y zip
 RUN apt-get update
 RUN apt-get install -y kubectl
 
-RUN apt-get install zip
