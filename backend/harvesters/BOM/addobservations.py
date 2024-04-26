@@ -4,7 +4,19 @@ import concurrent.futures
 from elasticsearch8 import Elasticsearch
 import os
 
+def call_bom(station_name, url):
 
+
+    print("URL", url)
+    res = requests.get(url)
+    if res.status_code == 200:
+        return station_name, res.json()
+
+    return station_name, None
+
+def parse_json(returned_json):
+    data = returned_json['observations']['data'][0]
+    return data
 
 
 def main():
@@ -16,33 +28,26 @@ def main():
         basic_auth=('elastic', 'elastic')
     )
 
-
-    current_app.logger.info(f'Connected To elastic')
-    current_app.logger.info(os.listdir())
-    print("DIR", os.listdir())
-    with open("./mapper.txt", "r") as file:
-
-        lines = file.readlines()
     
-    url_list = []
-    current_app.logger.info(f'Read files: {len(lines)}')
+    # Initialize the scroll
+    page = elastic_client.search(
+    index='stations',
 
-    for line in lines[1:]:
-        val = line.strip("\n").split(", ")
-        station_name = val[0]
-        url = val[1]
+    scroll='1m',  # Length of time to keep the scroll window open    
+    body={
+        "size": 1000,
+        "query": {"match_all": {}}}
+    )
 
-        url_list.append((station_name, url))
-        #break
-    #ping_results = []
-    current_app.logger.info(f'Starting Threading')
+    url_list = page['hits']['hits']
 
+    print(url_list)
     
     with concurrent.futures.ThreadPoolExecutor() as executor:
 
 
         # depending on testing function specified in metadata file, run the specfied function for the correspondning test 
-        future_to_result = {executor.submit(call_bom, val[0], val[1]): val for val in url_list}
+        future_to_result = {executor.submit(call_bom, val['_source']['station_name'], val['_source'][' url']): val for val in url_list}
 
         for future in concurrent.futures.as_completed(future_to_result):
             result = future_to_result[future]
