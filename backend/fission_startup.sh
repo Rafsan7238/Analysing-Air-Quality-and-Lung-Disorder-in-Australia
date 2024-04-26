@@ -6,36 +6,13 @@ fission function create --name bomharvester --env python --code backend/harveste
 fission function test --name bomharvester | jq '.'
 
 #fission route create --url /bomharvester --function bomharvester --name bomharvester --createingress
-
-(
-  cd backend/harvesters/BOM/
-  zip -r addobservations.zip .
-  mv addobservations.zip ../
-)
-
+(   cd backend/harvesters/BOM/;   zip -r addobservations.zip .;   mv addobservations.zip ../; )
 
 chmod +x build.sh
 
-fission package create --sourcearchive backend/harvesters/addobservations.zip\
-  --env python\
-  --name addobservations\
-  --buildcmd './build.sh'
+# or create 
+fission package update --sourcearchive backend/harvesters/addobservations.zip  --env python  --name addobservations  --buildcmd './build.sh'
 
-# in future run update
-fission fn create --name addobservations\
-  --pkg addobservations\
-  --env python\
-  --entrypoint "addobservations.main" 
+fission fn update --name addobservations  --pkg addobservations  --env python  --entrypoint "addobservations.main" 
 
 
-fission package create --sourcearchive ./backend/harvesters/addobservations.zip\
-  --env python\
-  --name addobservations\
-  --buildcmd './build.sh'
-
-
-# in future run update
-fission fn update --name addobservations\
-  --pkg addobservations\
-  --env python\
-  --entrypoint "addobservations.main" 
