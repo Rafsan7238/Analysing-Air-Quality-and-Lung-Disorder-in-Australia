@@ -4,6 +4,9 @@
 .dotnet
 .ssh
 .vscode-server
+.dev
+*.zip
+.tool-versions
 apt-get
 helm
 install
