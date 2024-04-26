@@ -5,9 +5,9 @@
     FOR COMP90024 ASSIGNMENT 2
     BY TEAM 45: 
         William Chen 1400081
-        Petr Andreev
+        Petr Andreev 1375858
         Rafsan Al Mamun 1407776
-        Xinran Li
+        Xinran Li 1549584
         Ojaswi Dheer 1447227
 
     Repurposed from Assignment 1
