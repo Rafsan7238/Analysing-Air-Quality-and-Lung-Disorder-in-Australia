@@ -1,4 +1,4 @@
- gccsa_code, gccsa_name,Lung cancer total mortality,Lung cancer population,Lung cancer rate per 100k,All cancer total mortality,All cancer population
+gccsa_code,gccsa_name,Lung cancer total mortality,Lung cancer population,Lung cancer rate per 100k,All cancer total mortality,All cancer population
 1GSYD,Greater Sydney,4345,11446232,37.96,21587,11446232
 1RNSW,Rest of NSW,3978,6494492,61.25,19223,6494492
 2GMEL,Greater Melbourne,3793,10330270,36.72,19747,10330270
