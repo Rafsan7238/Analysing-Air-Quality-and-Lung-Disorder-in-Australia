@@ -4,13 +4,22 @@
 #     Rafsan Al Mamun 1407776
 #     Xinran Li 1549584
 #     Ojaswi Dheer 1447227
-fission function delete --name health --verbosity=0;
-fission httptrigger delete --name health --verbosity=0;
 
-fission httptrigger delete --name create-indexes --verbosity=0;
-fission function delete --name create-indexes --verbosity=0;
+# Wipe fission state
+fission function delete --name health --ignorenotfound --verbosity=0;
+fission httptrigger delete --name health --ignorenotfound --verbosity=0;
 
-fission httptrigger delete --name insert-hist-tweets --verbosity=0;
-fission function delete --name insert-hist-tweets --verbosity=0;
+fission httptrigger delete --name create-indexes --ignorenotfound --verbosity=0;
+fission function delete --name create-indexes --ignorenotfound --verbosity=0;
 
-fission package delete --name elastic --verbosity=0;
+fission httptrigger delete --name insert-hist-tweets --ignorenotfound --verbosity=0;
+fission function delete --name insert-hist-tweets --ignorenotfound --verbosity=0;
+
+fission httptrigger delete --name insert-region-asthma --ignorenotfound  --verbosity=0;
+fission function delete --name insert-region-asthma --ignorenotfound --verbosity=0;
+
+fission package delete --name backend --ignorenotfound --verbosity=0;
+
+# These are fundamental, we should try to force their recreation but also warn if they could not be found.
+# fission env delete -f --name python --verbosity=0;
+# fission env delete -f --name nodejs --verbosity=0;
