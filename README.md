@@ -30,3 +30,7 @@ todo:
  - add content description to this readme.
  - add installation instructions???
  - add instructions on how to use the client.
+
+
+ ## Tests
+ To run tests execute `pytest tests/fission_tests.py` from project directory 

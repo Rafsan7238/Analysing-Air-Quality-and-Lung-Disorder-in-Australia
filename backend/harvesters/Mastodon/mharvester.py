@@ -13,11 +13,14 @@ def parse_json(msgs):
         new_msg = {}
         for key in keys:
             if key == "created_at":
-                raw_date = msg[key]
-                date = raw_date[0:19]
-                new_msg[key] = date
+                raw_date = msg.get(key)
+                if raw_date:
+                    date = raw_date[0:19]
+                    new_msg[key] = date
+                else:
+                    new_msg[key] = None
             else:
-                new_msg[key] = msg[key]
+                new_msg[key] = msg.get(key)
 
         new_msgs.append(new_msg)
     return new_msgs
