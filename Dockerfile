@@ -1,3 +1,6 @@
+# If you touch this file, ensure it still behaves as expected by deleting your local image and re-creating it
+# Insert header here.
+
 FROM ubuntu:latest
 RUN apt-get update
 RUN apt install -y curl
@@ -6,7 +9,7 @@ RUN apt install -y python3-pip
 RUN apt-get install -y openssh-client
 
 
-RUN pip install python-openstackclient
+RUN pip install python-openstackclient --break-system-packages
 RUN apt install -y jq
 RUN apt install -y kubernetes
 
@@ -36,4 +39,5 @@ RUN chmod 644 /etc/apt/sources.list.d/kubernetes.list
 RUN apt-get install -y zip
 RUN apt-get update
 RUN apt-get install -y kubectl
+
 
