@@ -5,28 +5,34 @@
 #     Xinran Li 1549584
 #     Ojaswi Dheer 1447227
 
+# Recreate Fission Objects
+
 ### ENV SETUP
 fission env create --name python --image fission/python-env --builder fission/python-builder --verbosity=0;
 fission env create --name nodejs --image fission/node-env --builder fission/node-builder --verbosity=0;
 
+### PACKAGE
+fission package create --sourcearchive backend.zip --env python --name backend --buildcmd './build.sh' --verbosity=0;
+
 ### HEALTHCHECK
-fission function create --name health --env python --code backend/utils/health.py --verbosity=0;
-# fission function test --name health | jq '.'
+fission function create --name health --pkg backend --env python --entrypoint utils.health.main --verbosity=0;
+# fission function test --name health
 
 fission route create --url /health --function health --name health --createingress --verbosity=0;
-
-### FISSION
-backend/elastic/package.sh
-fission package create --sourcearchive elastic.zip --env python --name elastic --buildcmd './build.sh' --verbosity=0;
+# curl "http://127.0.0.1:9090/health" 
 
 ### INDEX CREATION
-fission fn create --name create-indexes --pkg elastic --env python --entrypoint "elastic.create_indexes" --verbosity=0;
-fission route create --url /create-indexes --function create-indexes --name create-indexes --createingress --verbosity=0;
+fission fn create --name create-indexes --pkg backend --env python --entrypoint "backend.create_indexes_endpoint" --verbosity=0;
+fission route create --url "/create/indexes" --function create-indexes --name create-indexes --createingress --verbosity=0;
 
-### HISTORIC TWEET INSERTION
-fission fn create --name insert-hist-tweets --pkg elastic --env python --entrypoint "elastic.insert_hist_tweets" --verbosity=0;
-fission route create --url /insert-hist-tweets --function insert-hist-tweets --name insert-hist-tweets --createingress --verbosity=0;
+# ### HISTORIC TWEET INSERTION
+fission fn create --name insert-hist-tweets --pkg backend --env python --entrypoint "backend.insert_hist_tweets_endpoint" --verbosity=0;
+fission route create --url "/insert/hist-tweets" --function insert-hist-tweets --name insert-hist-tweets --createingress --verbosity=0;
 
+
+# ### ASTHMA BY REGION INSERTION
+fission fn create --name insert-region-asthma --pkg backend --env python --entrypoint "backend.insert_region_asthma_endpoint" --verbosity=0;
+fission route create --url "/insert/region-asthma" --function insert-region-asthma --name insert-region-asthma --createingress --verbosity=0;
 
 
 ### BOM HARVESTER PACKAGE
