@@ -29,6 +29,22 @@ fission route create --url "/create/indexes" --function create-indexes --name cr
 fission fn create --name insert-hist-tweets --pkg backend --env python --entrypoint "backend.insert_hist_tweets_endpoint" --verbosity=0;
 fission route create --url "/insert/hist-tweets" --function insert-hist-tweets --name insert-hist-tweets --createingress --verbosity=0;
 
+
 # ### ASTHMA BY REGION INSERTION
 fission fn create --name insert-region-asthma --pkg backend --env python --entrypoint "backend.insert_region_asthma_endpoint" --verbosity=0;
 fission route create --url "/insert/region-asthma" --function insert-region-asthma --name insert-region-asthma --createingress --verbosity=0;
+
+
+### BOM HARVESTER PACKAGE
+(   cd backend/harvesters/BOM/;   zip -r addobservations.zip .;   mv addobservations.zip ../; )
+chmod +x build.sh
+# Update package (or create) 
+fission package update --sourcearchive backend/harvesters/addobservations.zip  --env python  --name addobservations  --buildcmd './build.sh'
+fission fn update --name addobservations  --pkg addobservations  --env python  --entrypoint "addobservations.main" 
+
+
+### MASTODON HARVESTER
+(   cd backend/harvesters/Mastodon/;   zip -r mharvester.zip .;   mv mharvester.zip ../; )
+# Update package (or create) 
+fission package update --sourcearchive backend/harvesters/mharvester.zip  --env python  --name mharvester  --buildcmd './build.sh'
+fission fn update --name mharvester  --pkg mharvester  --env python  --entrypoint "mharvester.main" 
