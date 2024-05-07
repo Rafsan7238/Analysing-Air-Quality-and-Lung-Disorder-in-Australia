@@ -26,3 +26,19 @@ fission route create --url /create-indexes --function create-indexes --name crea
 ### HISTORIC TWEET INSERTION
 fission fn create --name insert-hist-tweets --pkg elastic --env python --entrypoint "elastic.insert_hist_tweets" --verbosity=0;
 fission route create --url /insert-hist-tweets --function insert-hist-tweets --name insert-hist-tweets --createingress --verbosity=0;
+
+
+
+### BOM HARVESTER PACKAGE
+(   cd backend/harvesters/BOM/;   zip -r addobservations.zip .;   mv addobservations.zip ../; )
+chmod +x build.sh
+# Update package (or create) 
+fission package update --sourcearchive backend/harvesters/addobservations.zip  --env python  --name addobservations  --buildcmd './build.sh'
+fission fn update --name addobservations  --pkg addobservations  --env python  --entrypoint "addobservations.main" 
+
+
+### MASTODON HARVESTER
+(   cd backend/harvesters/Mastodon/;   zip -r mharvester.zip .;   mv mharvester.zip ../; )
+# Update package (or create) 
+fission package update --sourcearchive backend/harvesters/mharvester.zip  --env python  --name mharvester  --buildcmd './build.sh'
+fission fn update --name mharvester  --pkg mharvester  --env python  --entrypoint "mharvester.main" 

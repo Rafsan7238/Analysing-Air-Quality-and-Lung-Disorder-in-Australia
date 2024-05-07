@@ -1,96 +1,96 @@
 station_name, url
-Charlton, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94839.json
-Hopetoun Airport, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94838.json
-Kerang, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94844.json
-Mildura, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94693.json
-Swan Hill, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94843.json
-Walpeup, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95831.json
-Edenhope, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95832.json
-Horsham, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95839.json
-Kanagulk, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95827.json
-Longerenong, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95835.json
-Nhill Aerodrome, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94827.json
-Stawell, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94836.json
-Warracknabeal Airport, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94920.json
-Ararat, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94834.json
-Ben Nevis, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94835.json
-Cape Nelson, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94826.json
-Cape Otway, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94842.json
-Casterton, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95825.json
-Dartmoor, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95822.json
-Hamilton, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94829.json
-Mortlake, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94840.json
-Mount Gellibrand, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95845.json
-Mount William, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94833.json
-Port Fairy, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94830.json
-Portland Airport, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94828.json
-Portland Harbour, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95826.json
-Warrnambool, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94837.json
-Westmere, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95840.json
-Aireys Inlet, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94846.json
-Avalon, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94854.json
-Ballarat, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94852.json
-Cerberus, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94898.json
-Coldstream, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94864.json
-Essendon Airport, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95866.json
-Fawkner Beacon, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95872.json
-Ferny Creek, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94872.json
-Frankston (Ballam Park), http://www.bom.gov.au/fwo/IDV60801/IDV60801.94876.json
-Frankston Beach, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94871.json
-Geelong Racecourse, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94857.json
-Laverton, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94865.json
-Melbourne Airport, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94866.json
-Melbourne (Olympic Park), http://www.bom.gov.au/fwo/IDV60801/IDV60801.95936.json
-Moorabbin Airport, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94870.json
-Point Cook, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95941.json
-Point Wilson, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94847.json
-Pound Creek, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94886.json
-Rhyll, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94892.json
-Scoresby, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95867.json
-Sheoaks, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94863.json
-South Channel Island, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94853.json
-St Kilda Harbour RMYS, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95864.json
-Viewbank, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95874.json
-Bendigo, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94855.json
-Echuca, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94861.json
-Kyabram, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95833.json
-Mangalore, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94874.json
-Redesdale, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94859.json
-Shepparton, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94875.json
-Strathbogie, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95843.json
-Tatura, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95836.json
-Yarrawonga, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94862.json
-Albury, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95896.json
-Benalla, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94884.json
-Falls Creek, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94903.json
-Hunters Hill, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94878.json
-Lake Dartmouth, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94888.json
-Mount Buller, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94894.json
-Mount Hotham Airport, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94905.json
-Mount Hotham, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94906.json
-Rutherglen, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95837.json
-Wangaratta, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94889.json
-Eildon Fire Tower, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94881.json
-Kilmore Gap, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94860.json
-Lake Eildon, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94882.json
-Maryborough, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94849.json
-Puckapunyal-Lyon Hill (Defence), http://www.bom.gov.au/fwo/IDV60801/IDV60801.94858.json
-Puckapunyal West (Defence), http://www.bom.gov.au/fwo/IDV60801/IDV60801.94856.json
-East Sale Airport, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95907.json
-Hogan Island, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94949.json
-Latrobe Valley, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94891.json
-Mount Baw Baw, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95901.json
-Mount Moornapa, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95913.json
-Warragul (Nilma North), http://www.bom.gov.au/fwo/IDV60801/IDV60801.99806.json
-Wilsons Promontory, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94893.json
-Yanakie, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94911.json
-Yarram Airport, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95890.json
-Bairnsdale, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94912.json
-Combienbar, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94914.json
-Gabo Island, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94933.json
-Gelantipy, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94913.json
-Lakes Entrance, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95904.json
-Mallacoota, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94935.json
-Mount Nowa Nowa, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94930.json
-Omeo, http://www.bom.gov.au/fwo/IDV60801/IDV60801.94908.json
-Orbost, http://www.bom.gov.au/fwo/IDV60801/IDV60801.95918.json
+Charlton, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94839.json
+Hopetoun Airport, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94838.json
+Kerang, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94844.json
+Mildura, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94693.json
+Swan Hill, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94843.json
+Walpeup, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95831.json
+Edenhope, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95832.json
+Horsham, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95839.json
+Kanagulk, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95827.json
+Longerenong, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95835.json
+Nhill Aerodrome, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94827.json
+Stawell, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94836.json
+Warracknabeal Airport, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94920.json
+Ararat, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94834.json
+Ben Nevis, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94835.json
+Cape Nelson, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94826.json
+Cape Otway, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94842.json
+Casterton, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95825.json
+Dartmoor, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95822.json
+Hamilton, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94829.json
+Mortlake, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94840.json
+Mount Gellibrand, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95845.json
+Mount William, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94833.json
+Port Fairy, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94830.json
+Portland Airport, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94828.json
+Portland Harbour, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95826.json
+Warrnambool, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94837.json
+Westmere, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95840.json
+Aireys Inlet, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94846.json
+Avalon, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94854.json
+Ballarat, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94852.json
+Cerberus, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94898.json
+Coldstream, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94864.json
+Essendon Airport, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95866.json
+Fawkner Beacon, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95872.json
+Ferny Creek, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94872.json
+Frankston (Ballam Park), http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94876.json
+Frankston Beach, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94871.json
+Geelong Racecourse, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94857.json
+Laverton, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94865.json
+Melbourne Airport, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94866.json
+Melbourne (Olympic Park), http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95936.json
+Moorabbin Airport, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94870.json
+Point Cook, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95941.json
+Point Wilson, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94847.json
+Pound Creek, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94886.json
+Rhyll, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94892.json
+Scoresby, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95867.json
+Sheoaks, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94863.json
+South Channel Island, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94853.json
+St Kilda Harbour RMYS, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95864.json
+Viewbank, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95874.json
+Bendigo, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94855.json
+Echuca, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94861.json
+Kyabram, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95833.json
+Mangalore, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94874.json
+Redesdale, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94859.json
+Shepparton, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94875.json
+Strathbogie, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95843.json
+Tatura, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95836.json
+Yarrawonga, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94862.json
+Albury, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95896.json
+Benalla, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94884.json
+Falls Creek, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94903.json
+Hunters Hill, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94878.json
+Lake Dartmouth, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94888.json
+Mount Buller, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94894.json
+Mount Hotham Airport, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94905.json
+Mount Hotham, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94906.json
+Rutherglen, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95837.json
+Wangaratta, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94889.json
+Eildon Fire Tower, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94881.json
+Kilmore Gap, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94860.json
+Lake Eildon, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94882.json
+Maryborough, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94849.json
+Puckapunyal-Lyon Hill (Defence), http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94858.json
+Puckapunyal West (Defence), http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94856.json
+East Sale Airport, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95907.json
+Hogan Island, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94949.json
+Latrobe Valley, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94891.json
+Mount Baw Baw, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95901.json
+Mount Moornapa, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95913.json
+Warragul (Nilma North), http://reg.bom.gov.au/fwo/IDV60801/IDV60801.99806.json
+Wilsons Promontory, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94893.json
+Yanakie, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94911.json
+Yarram Airport, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95890.json
+Bairnsdale, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94912.json
+Combienbar, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94914.json
+Gabo Island, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94933.json
+Gelantipy, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94913.json
+Lakes Entrance, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95904.json
+Mallacoota, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94935.json
+Mount Nowa Nowa, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94930.json
+Omeo, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.94908.json
+Orbost, http://reg.bom.gov.au/fwo/IDV60801/IDV60801.95918.json
