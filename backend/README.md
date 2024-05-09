@@ -12,6 +12,8 @@ The fission url root is `http://127.0.0.1:9090`.
 To access fission `kubectl port-forward service/router -n fission 9090:80`
 To access elastic search `kubectl port-forward service/elasticsearch-master -n elastic 9200:9200`
 
+To access kibanan `kubectl port-forward service/kibana-kibana -n elastic 5601:5601`
+
 
 The kibana url is `http://127.0.0.1:5601`
 
