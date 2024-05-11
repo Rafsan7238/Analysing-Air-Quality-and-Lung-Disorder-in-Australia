@@ -46,70 +46,91 @@ def create_indexes_endpoint():
 
 ###############################
 # air quality vs lung disease 
+def query_elastic(index, query):
+
+    es = get_client()
+    list_of_docs = []
+
+    # Initialize the scroll
+    scroll = es.search(
+        index=index,
+        body=query,
+        scroll='2m',  # Keep the search context alive for 2 minutes
+        size=10000  # Number of results per page
+    )
+
+    # Keep track of the scroll ID
+    scroll_id = scroll['_scroll_id']
+
+    # Fetch the initial page of results
+    for doc in scroll['hits']['hits']:
+        list_of_docs.append(doc['_source'])
+
+    # Use the scroll ID to fetch the next batch of documents
+    while True:
+        response = es.scroll(scroll_id=scroll_id, scroll='2m')
+        print('response', response)
+        # Break the loop if there are no more documents
+        if not response['hits']['hits']:
+            break
+        
+        for doc in response['hits']['hits']:
+            list_of_docs.append(doc['_source'])
+
+    # Clean up the scroll context
+    es.clear_scroll(scroll_id=scroll_id)
+    return list_of_docs
 
 def get_air_quality_hourly_avg():
     # get 2022_All_sites_air_quality_hourly_avg, 
     # select parameter_names = ['CO', 'PM10', 'PM2.5', 'O3', 'SO2']
     try: 
-        es = get_client()
         selected_parameters = ['CO', 'PM10', 'PM2.5', 'O3', 'SO2']
-        list_of_docs = []
-
-        # Initialize the scroll
-        scroll = es.search(
-            index="air_quality_hourly_avg",
-            body={"query": {"terms": {"parameter_name": selected_parameters}}},
-            scroll='2m',  # Keep the search context alive for 2 minutes
-            size=10000  # Number of results per page
-        )
-
-
-        # Keep track of the scroll ID
-        scroll_id = scroll['_scroll_id']
-
-        # Fetch the initial page of results
-        for doc in scroll['hits']['hits']:
-            list_of_docs.append(doc['_source'])
-
-        # Use the scroll ID to fetch the next batch of documents
-        while True:
-            response = es.scroll(scroll_id=scroll_id, scroll='2m')
-
-            # Break the loop if there are no more documents
-            if not response['hits']['hits']:
-                break
-
-            
-            for doc in response['hits']['hits']:
-                list_of_docs.append(doc['_source'])
-
-        # Clean up the scroll context
-        es.clear_scroll(scroll_id=scroll_id)
-
-
-        return jsonify({"success": False, "data": list_of_docs}), 200
+        query = {"query": {"terms": {"parameter_name": selected_parameters}}}
+        list_of_docs = query_elastic("air_quality_hourly_avg", query)
+        return jsonify({"success": True, "data": list_of_docs}), 200
 
     except Exception as e:
         return json.dumps(e) 
     
 
-def get_lung_cancer_join():
+def get_lung_cancer(request):
     # get all lung cancer data aihw_cimar_mortality_persons_gccsa_2009
+ 
+    try: 
+        data = json.loads(request.body)
+
+        # Retrieve data from JSON, defaulting to 'Guest' if not found
+        index = data.get('index')
+
+        if index not in ['mortality_persons', 'mortality_females', 'mortality_males']:
+            return jsonify({"success": False, "data": "incorrect index"}), 400
+
+        query = {"query": {"match_all": {}}}
+        list_of_docs = query_elastic(index)
+
+        return jsonify({"success": True, "data": list_of_docs}), 200
+
+    except Exception as e:
+        return json.dumps(e) 
     # merge with census_by_cob_data abs_2021census_g21a_aust_gccsa
     # join on inner, ['gccsa_code', 'gccsa_name']
-    pass 
-
-def get_gender_lung_cancer():
-    # get male lung cancer 
-    # get female lung cancer
-    # join on gccsa_name
-    # columns 'gccsa_name', 'Lung cancer rate per 100k'
-    # add suffix (male, female)
-    pass
+    
 
 
 def get_census_by_inc_emp():
     # return census data 
+    try: 
+        
+        index = 'census_g21b'
+        query = {"query": {"match_all": {}}}
+        list_of_docs = query_elastic(index)
+
+        return jsonify({"success": True, "data": list_of_docs}), 200
+
+    except Exception as e:
+        return json.dumps(e) 
+
     pass
 
 #############################

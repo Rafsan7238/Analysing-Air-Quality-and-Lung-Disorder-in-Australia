@@ -12,6 +12,7 @@ fission env create --name python --image fission/python-env --builder fission/py
 fission env create --name nodejs --image fission/node-env --builder fission/node-builder --verbosity=0;
 
 ### PACKAGE
+(   cd backend/;   zip -r backend.zip .;   mv backend.zip ../; )
 fission package create --sourcearchive backend.zip --env python --name backend --buildcmd './build.sh' --verbosity=0;
 
 ### HEALTHCHECK
@@ -48,3 +49,9 @@ fission fn update --name addobservations  --pkg addobservations  --env python  -
 # Update package (or create) 
 fission package update --sourcearchive backend/harvesters/mharvester.zip  --env python  --name mharvester  --buildcmd './build.sh'
 fission fn update --name mharvester  --pkg mharvester  --env python  --entrypoint "mharvester.main" 
+
+
+# ### GET ASTMA BY REGION 
+fission fn create --name get-air-quality-hourly-avg --pkg backend --env python --entrypoint "backend.get_air_quality_hourly_avg" --verbosity=0;
+fission route create --url "/get/air-quality-hourly-avg" --function get-air-quality-hourly-avg --name get-air-quality-hourly-avg --createingress --verbosity=0;
+
