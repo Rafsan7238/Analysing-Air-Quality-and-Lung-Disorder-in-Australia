@@ -36,7 +36,6 @@ fission route create --url "/insert/region-asthma" --function insert-region-asth
 
 ### BOM HARVESTER PACKAGE
 (   cd backend/harvesters/BOM/;   zip -r addobservations.zip .;   mv addobservations.zip ../; )
-# chmod +x build.sh
 # Update package (or create) 
 fission package create --sourcearchive backend/harvesters/addobservations.zip  --env python  --name addobservations  --buildcmd './build.sh'
 fission fn create --name addobservations  --pkg addobservations  --env python  --entrypoint "addobservations.main" 
