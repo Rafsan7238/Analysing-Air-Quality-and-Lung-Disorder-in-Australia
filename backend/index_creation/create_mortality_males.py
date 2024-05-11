@@ -1,6 +1,6 @@
 from constants import MORTALITY_MALES
 
-def create_historic_tweets_index(es_client):
+def create_mortality_males_index(es_client):
     if not es_client.indices.exists(index=MORTALITY_MALES):
         '''Create MORTALITY_MALES index'''
         body = {

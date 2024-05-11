@@ -1,8 +1,8 @@
-from constants import RAINFALL_SYDNEY
+from constants import RAINFALL_TASMANIA
 
-def create_historic_tweets_index(es_client):
-    if not es_client.indices.exists(index=RAINFALL_SYDNEY):
-        '''Create RAINFALL_SYDNEY index'''
+def create_rainfall_tasmania_index(es_client):
+    if not es_client.indices.exists(index=RAINFALL_TASMANIA):
+        '''Create RAINFALL_TASMANIA index'''
         body = {
             "settings": {
                 "index": {

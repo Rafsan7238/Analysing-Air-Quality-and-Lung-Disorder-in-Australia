@@ -8,8 +8,8 @@
 # Recreate Fission Objects
 
 ### ENV SETUP
-fission env create --name python --image fission/python-env --builder fission/python-builder --verbosity=0;
-fission env create --name nodejs --image fission/node-env --builder fission/node-builder --verbosity=0;
+# fission env create --name python --image fission/python-env --builder fission/python-builder --verbosity=0;
+# fission env create --name nodejs --image fission/node-env --builder fission/node-builder --verbosity=0;
 
 ### PACKAGE
 fission package create --sourcearchive backend.zip --env python --name backend --buildcmd './build.sh' --verbosity=0;
@@ -35,16 +35,16 @@ fission fn create --name insert-region-asthma --pkg backend --env python --entry
 fission route create --url "/insert/region-asthma" --function insert-region-asthma --name insert-region-asthma --createingress --verbosity=0;
 
 
-### BOM HARVESTER PACKAGE
-(   cd backend/harvesters/BOM/;   zip -r addobservations.zip .;   mv addobservations.zip ../; )
-chmod +x build.sh
-# Update package (or create) 
-fission package update --sourcearchive backend/harvesters/addobservations.zip  --env python  --name addobservations  --buildcmd './build.sh'
-fission fn update --name addobservations  --pkg addobservations  --env python  --entrypoint "addobservations.main" 
+# ### BOM HARVESTER PACKAGE
+# (   cd backend/harvesters/BOM/;   zip -r addobservations.zip .;   mv addobservations.zip ../; )
+# # chmod +x build.sh
+# # Update package (or create) 
+# fission package create --sourcearchive backend/harvesters/addobservations.zip  --env python  --name addobservations  --buildcmd './build.sh'
+# fission fn create --name addobservations  --pkg addobservations  --env python  --entrypoint "addobservations.main" 
 
 
-### MASTODON HARVESTER
-(   cd backend/harvesters/Mastodon/;   zip -r mharvester.zip .;   mv mharvester.zip ../; )
-# Update package (or create) 
-fission package update --sourcearchive backend/harvesters/mharvester.zip  --env python  --name mharvester  --buildcmd './build.sh'
-fission fn update --name mharvester  --pkg mharvester  --env python  --entrypoint "mharvester.main" 
+# ### MASTODON HARVESTER
+# (   cd backend/harvesters/Mastodon/;   zip -r mharvester.zip .;   mv mharvester.zip ../; )
+# # Update package (or create) 
+# fission package create --sourcearchive backend/harvesters/mharvester.zip  --env python  --name mharvester  --buildcmd './build.sh'
+# fission fn create --name mharvester  --pkg mharvester  --env python  --entrypoint "mharvester.main" 

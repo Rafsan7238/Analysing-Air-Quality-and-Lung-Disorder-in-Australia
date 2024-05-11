@@ -1,6 +1,6 @@
 from constants import RAINFALL_CANBERRA
 
-def create_historic_tweets_index(es_client):
+def create_rainfall_canberra_index(es_client):
     if not es_client.indices.exists(index=RAINFALL_CANBERRA):
         '''Create RAINFALL_CANBERRA index'''
         body = {

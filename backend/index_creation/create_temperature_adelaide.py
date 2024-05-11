@@ -1,8 +1,8 @@
-from constants import RAINFALL_ADELAIDE
+from constants import TEMPERATURE_ADELAIDE
 
-def create_historic_tweets_index(es_client):
-    if not es_client.indices.exists(index=RAINFALL_ADELAIDE):
-        '''Create RAINFALL_ADELAIDE index'''
+def create_temperature_adelaide_index(es_client):
+    if not es_client.indices.exists(index=TEMPERATURE_ADELAIDE):
+        '''Create TEMPERATURE_ADELAIDE index'''
         body = {
             "settings": {
                 "index": {

@@ -1,6 +1,6 @@
 from constants import TEMPERATURE_SYDNEY
 
-def create_historic_tweets_index(es_client):
+def create_temperature_sydney_index(es_client):
     if not es_client.indices.exists(index=TEMPERATURE_SYDNEY):
         '''Create TEMPERATURE_SYDNEY index'''
         body = {
