@@ -55,6 +55,11 @@ fission fn create --name mharvester  --pkg mharvester  --env python  --entrypoin
 fission fn create --name get-air-quality-hourly-avg --pkg backend --env python --entrypoint "backend.get_air_quality_hourly_avg" --verbosity=0;
 fission route create --url "/datasets/air-quality-hourly-avg" --function get-air-quality-hourly-avg --name get-air-quality-hourly-avg --createingress --verbosity=0;
 
+fission fn create --name get-census-by-inc --pkg backend --env python --entrypoint "backend.get_census_by_inc_emp" --verbosity=0;
+fission route create --url "/datasets/census-by-inc" --function get-census-by-inc --name get-census-by-inc --createingress --verbosity=0;
+
+
+
 fission fn create --name get-lung-cancer --pkg backend --env python --entrypoint "backend.get_lung_cancer" --verbosity=0;
 
 (
