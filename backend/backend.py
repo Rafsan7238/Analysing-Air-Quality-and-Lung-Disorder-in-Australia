@@ -132,12 +132,12 @@ def get_census_by_inc_emp():
         
         index = 'census_g21b'
         query = {"query": {"match_all": {}}}
-        list_of_docs = query_elastic(index)
+        list_of_docs = query_elastic(index, query)
 
         return jsonify({"success": True, "data": list_of_docs}), 200
 
     except Exception as e:
-        return json.dumps(e) 
+        return json.dumps(str(e)) 
 
     pass
 
