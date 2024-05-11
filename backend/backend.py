@@ -1,5 +1,6 @@
 import json
 
+from backend.index_creation.create_mortality_persons import create_mortality_persons_index
 from index_creation.create_air_quality_hourly_avg import create_air_quality_hourly_average
 from index_creation.create_census_g21b import create_census_g21b
 from index_creation.create_mortality_females import create_mortality_females_index
@@ -60,6 +61,7 @@ def create_indexes_endpoint():
         results[HIST_TWEET_INDEX_NAME] = create_historic_tweets_index(es)
         results[MORTALITY_FEMALES] = create_mortality_females_index(es)   
         results[MORTALITY_MALES] = create_mortality_males_index(es)   
+        results[MORTALITY_PERSONS] = create_mortality_persons_index(es)   
 
         results[RAINFALL_ADELAIDE] = create_rainfall_adelaide_index(es)   
         results[RAINFALL_BRISBANE] = create_rainfall_brisbane_index(es)   
@@ -78,8 +80,6 @@ def create_indexes_endpoint():
         results[TEMPERATURE_PERTH] = create_temperature_perth_index(es)   
         results[TEMPERATURE_SYDNEY] = create_temperature_sydney_index(es)   
         results[TEMPERATURE_TASMANIA] = create_temperature_tasmania_index(es)   
-
-        results[ASTHMA_BY_REGION_INDEX_NAME] = create_asthma_by_region_index(es)
     
         return json.dumps(results)
     except Exception as e:

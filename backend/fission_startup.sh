@@ -8,8 +8,8 @@
 # Recreate Fission Objects
 
 ### ENV SETUP
-# fission env create --name python --image fission/python-env --builder fission/python-builder --verbosity=0;
-# fission env create --name nodejs --image fission/node-env --builder fission/node-builder --verbosity=0;
+fission env create --name python --image fission/python-env --builder fission/python-builder --verbosity=0;
+fission env create --name nodejs --image fission/node-env --builder fission/node-builder --verbosity=0;
 
 ### PACKAGE
 fission package create --sourcearchive backend.zip --env python --name backend --buildcmd './build.sh' --verbosity=0;

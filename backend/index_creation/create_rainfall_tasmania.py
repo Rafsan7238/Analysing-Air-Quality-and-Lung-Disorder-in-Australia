@@ -35,7 +35,7 @@ def create_rainfall_tasmania_index(es_client):
         }
 
         es_client.indices.create(
-            index=RAINFALL_SYDNEY,
+            index=RAINFALL_TASMANIA,
             body = body
         )
         return "Created"

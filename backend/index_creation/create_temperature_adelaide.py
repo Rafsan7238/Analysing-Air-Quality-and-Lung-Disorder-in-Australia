@@ -35,7 +35,7 @@ def create_temperature_adelaide_index(es_client):
         }
 
         es_client.indices.create(
-            index=RAINFALL_ADELAIDE,
+            index=TEMPERATURE_ADELAIDE,
             body = body
         )
         return "Created"
