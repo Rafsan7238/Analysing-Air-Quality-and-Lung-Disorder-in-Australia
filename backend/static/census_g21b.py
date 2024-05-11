@@ -1,7 +1,7 @@
 import csv
 from constants import CENSUS_G21B
 
-def insert_census_g21b(es, bulker):       
+def insert(es, bulker):       
     if not es.indices.exists(index=CENSUS_G21B):
         return f'{CENSUS_G21B} index does not exist'
 

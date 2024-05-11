@@ -1,6 +1,6 @@
 import json
-
-from backend.index_creation.create_mortality_persons import create_mortality_persons_index
+from flask import jsonify, current_app, request
+from index_creation.create_mortality_persons import create_mortality_persons_index
 from index_creation.create_air_quality_hourly_avg import create_air_quality_hourly_average
 from index_creation.create_census_g21b import create_census_g21b
 from index_creation.create_mortality_females import create_mortality_females_index
@@ -25,8 +25,29 @@ from constants import *
 from elastic_client_provider import get_bulker, get_client
 from index_creation.create_asthma_by_region_index import create_asthma_by_region_index
 from index_creation.create_historic_tweets_index import create_historic_tweets_index
-from static.historic_tweet_sentiments import insert_hist_tweets
-from static.asthma_by_region import insert_region_asthma
+import static.historic_tweet_sentiments 
+import static.asthma_by_region 
+import static.air_quality_hourly_avg 
+import static.census_g21b 
+import static.mortality_females 
+import static.mortality_males 
+import static.mortality_persons 
+import static.rainfall_adelaide
+import static.rainfall_brisbane
+import static.rainfall_canberra
+import static.rainfall_darwin
+import static.rainfall_melbourne
+import static.rainfall_perth
+import static.rainfall_sydney
+import static.rainfall_tasmania
+import static.temperature_adelaide
+import static.temperature_brisbane
+import static.temperature_canberra
+import static.temperature_darwin
+import static.temperature_melbourne
+import static.temperature_perth
+import static.temperature_sydney
+import static.temperature_tasmania
 
 def insert_hist_tweets_endpoint():
     try:
@@ -37,7 +58,7 @@ def insert_hist_tweets_endpoint():
 
         return json.dumps({'result': res})
     except Exception as e:
-        return json.dumps(e)
+        return json.dumps(str(e))
     
 def insert_region_asthma_endpoint():
     try:
@@ -48,7 +69,71 @@ def insert_region_asthma_endpoint():
 
         return json.dumps({'result': res})
     except Exception as e:
-        return json.dumps(e)
+        return json.dumps(str(e))
+
+def insert_indexes():
+    try: 
+        print('starting')
+        es = get_client()
+        bulker = get_bulker()
+        try:
+            index= request.headers['X-Fission-Params-Index']
+        except KeyError:
+                print(request.headers)
+                index= None
+
+        if index == AIR_QUALITY_HOURLY_AVG:
+            res = static.air_quality_hourly_avg.insert(es, bulker)
+        elif index == ASTHMA_BY_REGION_INDEX_NAME:
+            res = static.asthma_by_region.insert(es, bulker)
+        elif index == CENSUS_G21B:
+            res = static.census_g21b.insert(es, bulker)
+        elif index == HIST_TWEET_INDEX_NAME:
+            res = static.historic_tweet_sentiments.insert(es, bulker)
+        elif index == MORTALITY_FEMALES:
+            res = static.mortality_females.insert(es, bulker)
+        elif index == MORTALITY_MALES:
+            res = static.mortality_males.insert(es, bulker)
+        elif index == MORTALITY_PERSONS:
+            res = static.mortality_persons.insert(es, bulker)
+        elif index == RAINFALL_ADELAIDE: 
+            res = static.rainfall_adelaide.insert(es, bulker)
+        elif index == RAINFALL_BRISBANE: 
+            res = static.rainfall_brisbane.insert(es, bulker)
+        elif index == RAINFALL_CANBERRA: 
+            res = static.rainfall_canberra.insert(es, bulker)
+        elif index == RAINFALL_DARWIN: 
+            res = static.rainfall_darwin.insert(es, bulker)
+        elif index == RAINFALL_MELBOURNE: 
+            res = static.rainfall_melbourne.insert(es, bulker)
+        elif index == RAINFALL_PERTH: 
+            res = static.rainfall_perth.insert(es, bulker)
+        elif index == RAINFALL_SYDNEY: 
+            res = static.rainfall_sydney.insert(es, bulker)
+        elif index == RAINFALL_TASMANIA: 
+            res = static.rainfall_tasmania.insert(es, bulker)
+        elif index == TEMPERATURE_ADELAIDE: 
+            res = static.temperature_adelaide.insert(es, bulker)
+        elif index == TEMPERATURE_BRISBANE: 
+            res = static.temperature_brisbane.insert(es, bulker)
+        elif index == TEMPERATURE_CANBERRA: 
+            res = static.temperature_canberra.insert(es, bulker)
+        elif index == TEMPERATURE_DARWIN: 
+            res = static.temperature_darwin.insert(es, bulker)
+        elif index == TEMPERATURE_MELBOURNE: 
+            res = static.temperature_melbourne.insert(es, bulker)
+        elif index == TEMPERATURE_PERTH: 
+            res = static.temperature_perth.insert(es, bulker)
+        elif index == TEMPERATURE_SYDNEY: 
+            res = static.temperature_sydney.insert(es, bulker)
+        elif index == TEMPERATURE_TASMANIA: 
+            res = static.temperature_tasmania.insert(es, bulker)
+        else:
+            return jsonify({"success":False, "message":"incorrect index"}), 400
+        return json.dumps({'result': res})
+    
+    except Exception as e:
+        return json.dumps(str(e)) 
 
 def create_indexes_endpoint():
     try:    
@@ -83,4 +168,4 @@ def create_indexes_endpoint():
     
         return json.dumps(results)
     except Exception as e:
-        return json.dumps(e)
+        return json.dumps(str(e))

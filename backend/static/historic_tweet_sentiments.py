@@ -1,7 +1,7 @@
 import json, os
 from constants import HIST_TWEET_INDEX_NAME
 
-def insert_hist_tweets(es, bulker):        
+def insert(es, bulker):        
     if not es.indices.exists(index=HIST_TWEET_INDEX_NAME):
         return f'{HIST_TWEET_INDEX_NAME} index does not exist'
 
