@@ -52,15 +52,46 @@ def get_air_quality_hourly_avg():
     # select parameter_names = ['CO', 'PM10', 'PM2.5', 'O3', 'SO2']
     try: 
         es = get_client()
-        bulker = get_bulker()
+        selected_parameters = ['CO', 'PM10', 'PM2.5', 'O3', 'SO2']
+        list_of_docs = []
 
+        # Initialize the scroll
+        scroll = es.search(
+            index="air_quality_hourly_avg",
+            body={"query": {"terms": {"parameter_name": selected_parameters}}},
+            scroll='2m',  # Keep the search context alive for 2 minutes
+            size=10000  # Number of results per page
+        )
+
+
+        # Keep track of the scroll ID
+        scroll_id = scroll['_scroll_id']
+
+        # Fetch the initial page of results
+        for doc in scroll['hits']['hits']:
+            list_of_docs.append(doc['_source'])
+
+        # Use the scroll ID to fetch the next batch of documents
+        while True:
+            response = es.scroll(scroll_id=scroll_id, scroll='2m')
+
+            # Break the loop if there are no more documents
+            if not response['hits']['hits']:
+                break
+
+            
+            for doc in response['hits']['hits']:
+                list_of_docs.append(doc['_source'])
+
+        # Clean up the scroll context
+        es.clear_scroll(scroll_id=scroll_id)
+
+
+        return jsonify({"success": False, "data": list_of_docs}), 200
 
     except Exception as e:
-        return json.dumps(e)
+        return json.dumps(e) 
     
-
-    pass
-
 
 def get_lung_cancer_join():
     # get all lung cancer data aihw_cimar_mortality_persons_gccsa_2009
