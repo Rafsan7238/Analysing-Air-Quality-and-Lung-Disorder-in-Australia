@@ -12,7 +12,7 @@ def insert_census_g21b(es, bulker):
         return f'{CENSUS_G21B} already has data. Please delete before attempting re-insertion.'
 
     try:
-        with open('../userfunc/deployarchive/data/lung_disease_dataset/abs_2021census_g21b_aust_gccsa.csv.csv', 'r') as csv_file:
+        with open('../userfunc/deployarchive/data/lung_disease_dataset/abs_2021census_g21b_aust_gccsa.csv', 'r') as csv_file:
             csv_reader = csv.DictReader(csv_file, delimiter=',')
 
             inserts = []
