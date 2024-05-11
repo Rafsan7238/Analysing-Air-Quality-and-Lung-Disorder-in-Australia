@@ -1,5 +1,6 @@
 import json
-
+from flask import current_app, request
+from flask import jsonify
 from constants import ASTHMA_BY_REGION_INDEX_NAME, HIST_TWEET_INDEX_NAME
 from elastic_client_provider import get_bulker, get_client
 from index_creation.create_asthma_by_region_index import create_asthma_by_region_index
@@ -64,8 +65,9 @@ def query_elastic(index, query):
 
     # Fetch the initial page of results
     for doc in scroll['hits']['hits']:
+        print("DOC", doc)
         list_of_docs.append(doc['_source'])
-
+    print("len", len(list_of_docs))
     # Use the scroll ID to fetch the next batch of documents
     while True:
         response = es.scroll(scroll_id=scroll_id, scroll='2m')
@@ -76,7 +78,7 @@ def query_elastic(index, query):
         
         for doc in response['hits']['hits']:
             list_of_docs.append(doc['_source'])
-
+        print("len", len(list_of_docs))
     # Clean up the scroll context
     es.clear_scroll(scroll_id=scroll_id)
     return list_of_docs
@@ -88,31 +90,37 @@ def get_air_quality_hourly_avg():
         selected_parameters = ['CO', 'PM10', 'PM2.5', 'O3', 'SO2']
         query = {"query": {"terms": {"parameter_name": selected_parameters}}}
         list_of_docs = query_elastic("air_quality_hourly_avg", query)
+        print('returned', list_of_docs)
         return jsonify({"success": True, "data": list_of_docs}), 200
 
     except Exception as e:
-        return json.dumps(e) 
+        return json.dumps(str(e)) 
     
 
-def get_lung_cancer(request):
+def get_lung_cancer():
     # get all lung cancer data aihw_cimar_mortality_persons_gccsa_2009
  
     try: 
-        data = json.loads(request.body)
+        print('starting')
 
-        # Retrieve data from JSON, defaulting to 'Guest' if not found
-        index = data.get('index')
+        try:
+            index= request.headers['X-Fission-Params-Index']
+        except KeyError:
+            print(request.headers)
+            index= None
 
+
+        print("index", index)
         if index not in ['mortality_persons', 'mortality_females', 'mortality_males']:
             return jsonify({"success": False, "data": "incorrect index"}), 400
 
         query = {"query": {"match_all": {}}}
-        list_of_docs = query_elastic(index)
-
+        list_of_docs = query_elastic(index, query)
+        print('list_of_docs', list_of_docs)
         return jsonify({"success": True, "data": list_of_docs}), 200
 
     except Exception as e:
-        return json.dumps(e) 
+        return jsonify({"success": False, "data": json.dumps(str(e))}), 400
     # merge with census_by_cob_data abs_2021census_g21a_aust_gccsa
     # join on inner, ['gccsa_code', 'gccsa_name']
     

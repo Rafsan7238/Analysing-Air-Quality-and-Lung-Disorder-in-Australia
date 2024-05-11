@@ -6,7 +6,7 @@
 #     Ojaswi Dheer 1447227
 
 # Wipe fission state
-fission function delete --name health --ignorenotfound --verbosity=0;
+fission function delete --name health --ignorenotfound --verbosity=0 ;
 fission httptrigger delete --name health --ignorenotfound --verbosity=0;
 
 fission httptrigger delete --name create-indexes --ignorenotfound --verbosity=0;
@@ -18,7 +18,18 @@ fission function delete --name insert-hist-tweets --ignorenotfound --verbosity=0
 fission httptrigger delete --name insert-region-asthma --ignorenotfound  --verbosity=0;
 fission function delete --name insert-region-asthma --ignorenotfound --verbosity=0;
 
-fission package delete --name backend --ignorenotfound --verbosity=0;
+fission package delete -f --name backend --ignorenotfound --verbosity=0;
+
+
+fission package delete -f --name addobservations --ignorenotfound --verbosity=0;
+fission package delete -f --name mharvester --ignorenotfound --verbosity=0;
+
+
+fission function delete --name get-air-quality-hourly-avg --ignorenotfound --verbosity=0;
+fission httptrigger delete --name get-air-quality-hourly-avg --ignorenotfound --verbosity=0;
+
+fission function delete --name get-lung-cancer --ignorenotfound --verbosity=0;
+fission httptrigger delete --name get-lung-cancer --ignorenotfound --verbosity=0;
 
 # These are fundamental, we should try to force their recreation but also warn if they could not be found.
 # fission env delete -f --name python --verbosity=0;
