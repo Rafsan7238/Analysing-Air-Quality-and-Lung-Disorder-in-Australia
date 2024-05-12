@@ -1,7 +1,7 @@
 import csv
 from constants import TEMPERATURE_TASMANIA
 
-def insert(es, bulker):       
+def insert_region_asthma(es, bulker):       
     if not es.indices.exists(index=TEMPERATURE_TASMANIA):
         return f'{TEMPERATURE_TASMANIA} index does not exist'
 

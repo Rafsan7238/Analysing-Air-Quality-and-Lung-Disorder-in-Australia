@@ -5,9 +5,9 @@ def create_census_g21b(es_client):
         '''Create census_g21b index'''
         body = {
             "settings": {
-                "index": { 
-                    "number_of_shards": 1,
-                    "number_of_replicas": 3
+                "index": {
+                    "number_of_shards": 3,
+                    "number_of_replicas": 1
                 }
             },
             "mappings": {

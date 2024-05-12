@@ -1,13 +1,13 @@
 from constants import TEMPERATURE_MELBOURNE
 
-def create_temperature_melbourne_index(es_client):
+def create_historic_tweets_index(es_client):
     if not es_client.indices.exists(index=TEMPERATURE_MELBOURNE):
         '''Create TEMPERATURE_MELBOURNE index'''
         body = {
             "settings": {
                 "index": {
-                    "number_of_shards": 1,
-                    "number_of_replicas": 3
+                    "number_of_shards": 3,
+                    "number_of_replicas": 1
                 }
             },
             "mappings": {
