@@ -35,10 +35,8 @@ fission route create --url "/insert/hist-tweets" --function insert-hist-tweets -
 fission fn create --name insert-region-asthma --pkg backend --env python --entrypoint "backend.insert_region_asthma_endpoint" --verbosity=0;
 fission route create --url "/insert/region-asthma" --function insert-region-asthma --name insert-region-asthma --createingress --verbosity=0;
 
-
 ### BOM HARVESTER PACKAGE
 (   cd backend/harvesters/BOM/;   zip -r addobservations.zip .;   mv addobservations.zip ../; )
-chmod +x build.sh
 # Update package (or create) 
 fission package create --sourcearchive backend/harvesters/addobservations.zip  --env python  --name addobservations  --buildcmd './build.sh'
 fission fn create --name addobservations  --pkg addobservations  --env python  --entrypoint "addobservations.main" 
@@ -62,3 +60,12 @@ fission fn create --name get-index --pkg backend --env python --entrypoint "back
     --method GET \
     --url '/datasets/{index}'
 )
+
+fission fn create --name insert-indexes --pkg backend --env python --entrypoint "backend.insert_indexes" --verbosity=0;
+
+(
+  fission route create --name insert-indexes --function insert-indexes \
+    --method GET \
+    --url '/datasets/insert_indexes/{index}'
+)
+#chmod +x backend/fission_wipe.sh

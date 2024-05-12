@@ -1,7 +1,7 @@
 import csv
 from constants import ASTHMA_BY_REGION_INDEX_NAME
 
-def insert_region_asthma(es, bulker):       
+def insert(es, bulker):       
     if not es.indices.exists(index=ASTHMA_BY_REGION_INDEX_NAME):
         return f'{ASTHMA_BY_REGION_INDEX_NAME} index does not exist'
 
