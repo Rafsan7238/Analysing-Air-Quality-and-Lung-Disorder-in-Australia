@@ -1,13 +1,13 @@
-from constants import RAINFALL_TASMANIA
+from constants import RAINFALL_SYDNEY
 
-def create_rainfall_tasmania_index(es_client):
-    if not es_client.indices.exists(index=RAINFALL_TASMANIA):
-        '''Create RAINFALL_TASMANIA index'''
+def create_historic_tweets_index(es_client):
+    if not es_client.indices.exists(index=RAINFALL_SYDNEY):
+        '''Create RAINFALL_SYDNEY index'''
         body = {
             "settings": {
                 "index": {
-                    "number_of_shards": 1,
-                    "number_of_replicas": 3
+                    "number_of_shards": 3,
+                    "number_of_replicas": 1
                 }
             },
             "mappings": {
@@ -35,7 +35,7 @@ def create_rainfall_tasmania_index(es_client):
         }
 
         es_client.indices.create(
-            index=RAINFALL_TASMANIA,
+            index=RAINFALL_SYDNEY,
             body = body
         )
         return "Created"

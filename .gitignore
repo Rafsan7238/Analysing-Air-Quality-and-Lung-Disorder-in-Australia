@@ -20,5 +20,3 @@ frontend/.idea/misc.xml
 frontend/.idea/modules.xml
 .cache
 .venv
-backend/harvesters/addobservations.zip
-backend/harvesters/mharvester.zip
