@@ -1,7 +1,7 @@
 import csv
 from constants import RAINFALL_DARWIN
 
-def insert_region_asthma(es, bulker):       
+def insert(es, bulker):       
     if not es.indices.exists(index=RAINFALL_DARWIN):
         return f'{RAINFALL_DARWIN} index does not exist'
 

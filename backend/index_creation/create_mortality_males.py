@@ -1,13 +1,13 @@
 from constants import MORTALITY_MALES
 
-def create_historic_tweets_index(es_client):
+def create_mortality_males_index(es_client):
     if not es_client.indices.exists(index=MORTALITY_MALES):
         '''Create MORTALITY_MALES index'''
         body = {
             "settings": {
                 "index": {
-                    "number_of_shards": 3,
-                    "number_of_replicas": 1
+                    "number_of_shards": 1,
+                    "number_of_replicas": 3
                 }
             },
             "mappings": {
