@@ -49,27 +49,40 @@ import static.temperature_perth
 import static.temperature_sydney
 import static.temperature_tasmania
 
-def insert_hist_tweets_endpoint():
-    try:
+def insert_all():
+    try: 
+        print('starting')
         es = get_client()
         bulker = get_bulker()
+        res = dict()
 
-        res = insert_hist_tweets(es, bulker)
+        res[AIR_QUALITY_HOURLY_AVG] = static.air_quality_hourly_avg.insert(es, bulker)
+        res[ASTHMA_BY_REGION_INDEX_NAME] = static.asthma_by_region.insert(es, bulker)
+        res[CENSUS_G21B] = static.census_g21b.insert(es, bulker)
+        res[HIST_TWEET_INDEX_NAME] = static.historic_tweet_sentiments.insert(es, bulker)
+        res[MORTALITY_FEMALES] = static.mortality_females.insert(es, bulker)
+        res[MORTALITY_MALES] = static.mortality_males.insert(es, bulker)
+        res[MORTALITY_PERSONS] = static.mortality_persons.insert(es, bulker)
+        res[RAINFALL_ADELAIDE] = static.rainfall_adelaide.insert(es, bulker)
+        res[RAINFALL_BRISBANE] = static.rainfall_brisbane.insert(es, bulker)
+        res[RAINFALL_CANBERRA] = static.rainfall_canberra.insert(es, bulker)
+        res[RAINFALL_DARWIN] = static.rainfall_darwin.insert(es, bulker)
+        res[RAINFALL_MELBOURNE] = static.rainfall_melbourne.insert(es, bulker)
+        res[RAINFALL_PERTH] = static.rainfall_perth.insert(es, bulker)
+        res[RAINFALL_SYDNEY] = static.rainfall_sydney.insert(es, bulker)
+        res[RAINFALL_TASMANIA] = static.rainfall_tasmania.insert(es, bulker)
+        res[TEMPERATURE_ADELAIDE] = static.temperature_adelaide.insert(es, bulker)
+        res[TEMPERATURE_BRISBANE] = static.temperature_brisbane.insert(es, bulker)
+        res[TEMPERATURE_CANBERRA] = static.temperature_canberra.insert(es, bulker)
+        res[TEMPERATURE_DARWIN] = static.temperature_darwin.insert(es, bulker)
+        res[TEMPERATURE_MELBOURNE] = static.temperature_melbourne.insert(es, bulker)
+        res[TEMPERATURE_PERTH] = static.temperature_perth.insert(es, bulker)
+        res[TEMPERATURE_SYDNEY] = static.temperature_sydney.insert(es, bulker)
+        res[TEMPERATURE_TASMANIA] = static.temperature_tasmania.insert(es, bulker)
 
         return json.dumps({'result': res})
     except Exception as e:
-        return json.dumps(str(e))
-    
-def insert_region_asthma_endpoint():
-    try:
-        es = get_client()
-        bulker = get_bulker()
-
-        res = insert_region_asthma(es, bulker)
-
-        return json.dumps({'result': res})
-    except Exception as e:
-        return json.dumps(str(e))
+        return json.dumps(str(e)) 
 
 def insert_indexes():
     try: 

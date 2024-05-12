@@ -7,7 +7,7 @@ def create_air_quality_hourly_average(es_client):
             "settings": {
                 "index": {
                     "number_of_shards": 10, # 765202 rows, deserves multiple shards
-                    "number_of_replicas": 3
+                    "number_of_replicas": 1
                 }
             },
             "mappings": {

@@ -8,7 +8,7 @@
 # Recreate Fission Objects
 
 ### ENV SETUP
-fission env create --name python --image fission/python-env --builder fission/python-builder --verbosity=0;
+fission env create --name python --builder fission/python-builder-3.9 --image fission/python-env-3.9 --verbosity=0;
 fission env create --name nodejs --image fission/node-env --builder fission/node-builder --verbosity=0;
 
 ### PACKAGE
@@ -23,16 +23,7 @@ fission route create --url /health --function health --name health --createingre
 
 ### INDEX CREATION
 fission fn create --name create-indexes --pkg backend --env python --entrypoint "backend.create_indexes_endpoint" --verbosity=0;
-fission route create --url "/create/indexes" --function create-indexes --name create-indexes --createingress --verbosity=0;
-
-# ### HISTORIC TWEET INSERTION
-fission fn create --name insert-hist-tweets --pkg backend --env python --entrypoint "backend.insert_hist_tweets_endpoint" --verbosity=0;
-fission route create --url "/insert/hist-tweets" --function insert-hist-tweets --name insert-hist-tweets --createingress --verbosity=0;
-
-
-# ### ASTHMA BY REGION INSERTION
-fission fn create --name insert-region-asthma --pkg backend --env python --entrypoint "backend.insert_region_asthma_endpoint" --verbosity=0;
-fission route create --url "/insert/region-asthma" --function insert-region-asthma --name insert-region-asthma --createingress --verbosity=0;
+fission route create --url "/indexes/create/all" --function create-indexes --name create-indexes --createingress --verbosity=0;
 
 ### BOM HARVESTER PACKAGE
 (   cd backend/harvesters/BOM/;   zip -r addobservations.zip .;   mv addobservations.zip ../; )
@@ -47,8 +38,6 @@ fission fn create --name addobservations  --pkg addobservations  --env python  -
 fission package create --sourcearchive backend/harvesters/mharvester.zip  --env python  --name mharvester  --buildcmd './build.sh'
 fission fn create --name mharvester  --pkg mharvester  --env python  --entrypoint "mharvester.main" 
 
-
-
 fission fn create --name insert-indexes --pkg backend --env python --entrypoint "backend.insert_indexes" --verbosity=0;
 
 (
@@ -56,4 +45,8 @@ fission fn create --name insert-indexes --pkg backend --env python --entrypoint 
     --method GET \
     --url '/datasets/insert_indexes/{index}'
 )
+
+fission fn create --name insert-all --pkg backend --env python --entrypoint "backend.insert_all" --verbosity=0;
+fission route create --url "/datasets/insert_all" --function insert-all --name insert-all --createingress --verbosity=0;
+
 #chmod +x backend/fission_wipe.sh

@@ -7,7 +7,7 @@ def create_rainfall_darwin_index(es_client):
             "settings": {
                 "index": {
                     "number_of_shards": 1,
-                    "number_of_replicas": 3
+                    "number_of_replicas": 1
                 }
             },
             "mappings": {
