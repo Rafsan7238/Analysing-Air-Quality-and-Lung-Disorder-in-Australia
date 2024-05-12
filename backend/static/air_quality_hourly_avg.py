@@ -1,7 +1,7 @@
 import csv
 from constants import AIR_QUALITY_HOURLY_AVG
 
-def insert_region_asthma(es, bulker):       
+def insert(es, bulker):       
     if not es.indices.exists(index=AIR_QUALITY_HOURLY_AVG):
         return f'{AIR_QUALITY_HOURLY_AVG} index does not exist'
 

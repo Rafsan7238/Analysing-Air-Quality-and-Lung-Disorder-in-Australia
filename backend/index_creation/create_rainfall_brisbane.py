@@ -1,13 +1,13 @@
 from constants import RAINFALL_BRISBANE
 
-def create_historic_tweets_index(es_client):
+def create_rainfall_brisbane_index(es_client):
     if not es_client.indices.exists(index=RAINFALL_BRISBANE):
         '''Create RAINFALL_BRISBANE index'''
         body = {
             "settings": {
                 "index": {
-                    "number_of_shards": 3,
-                    "number_of_replicas": 1
+                    "number_of_shards": 1,
+                    "number_of_replicas": 3
                 }
             },
             "mappings": {

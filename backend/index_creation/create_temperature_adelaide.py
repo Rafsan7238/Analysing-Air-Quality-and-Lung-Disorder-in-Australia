@@ -1,13 +1,13 @@
-from constants import RAINFALL_ADELAIDE
+from constants import TEMPERATURE_ADELAIDE
 
-def create_historic_tweets_index(es_client):
-    if not es_client.indices.exists(index=RAINFALL_ADELAIDE):
-        '''Create RAINFALL_ADELAIDE index'''
+def create_temperature_adelaide_index(es_client):
+    if not es_client.indices.exists(index=TEMPERATURE_ADELAIDE):
+        '''Create TEMPERATURE_ADELAIDE index'''
         body = {
             "settings": {
                 "index": {
-                    "number_of_shards": 3,
-                    "number_of_replicas": 1
+                    "number_of_shards": 1,
+                    "number_of_replicas": 3
                 }
             },
             "mappings": {
@@ -35,7 +35,7 @@ def create_historic_tweets_index(es_client):
         }
 
         es_client.indices.create(
-            index=RAINFALL_ADELAIDE,
+            index=TEMPERATURE_ADELAIDE,
             body = body
         )
         return "Created"
