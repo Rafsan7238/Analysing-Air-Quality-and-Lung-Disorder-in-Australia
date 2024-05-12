@@ -97,7 +97,7 @@ def get_air_quality_hourly_avg():
         return json.dumps(str(e)) 
     
 
-def get_lung_cancer():
+def get_index():
     # get all lung cancer data aihw_cimar_mortality_persons_gccsa_2009
  
     try: 
@@ -111,9 +111,7 @@ def get_lung_cancer():
 
 
         print("index", index)
-        if index not in ['mortality_persons', 'mortality_females', 'mortality_males']:
-            return jsonify({"success": False, "data": "incorrect index"}), 400
-
+        
         query = {"query": {"match_all": {}}}
         list_of_docs = query_elastic(index, query)
         print('list_of_docs', list_of_docs)
@@ -124,22 +122,6 @@ def get_lung_cancer():
     # merge with census_by_cob_data abs_2021census_g21a_aust_gccsa
     # join on inner, ['gccsa_code', 'gccsa_name']
     
-
-
-def get_census_by_inc_emp():
-    # return census data 
-    try: 
-        
-        index = 'census_g21b'
-        query = {"query": {"match_all": {}}}
-        list_of_docs = query_elastic(index, query)
-
-        return jsonify({"success": True, "data": list_of_docs}), 200
-
-    except Exception as e:
-        return json.dumps(str(e)) 
-
-    pass
 
 #############################
 # weather vs sentiment 

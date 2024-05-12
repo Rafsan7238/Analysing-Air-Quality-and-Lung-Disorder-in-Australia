@@ -28,12 +28,8 @@ fission package delete -f --name mharvester --ignorenotfound --verbosity=0;
 fission function delete --name get-air-quality-hourly-avg --ignorenotfound --verbosity=0;
 fission httptrigger delete --name get-air-quality-hourly-avg --ignorenotfound --verbosity=0;
 
-fission function delete --name get-lung-cancer --ignorenotfound --verbosity=0;
-fission httptrigger delete --name get-lung-cancer --ignorenotfound --verbosity=0;
-
-
-fission function delete --name get-census-by-inc --ignorenotfound --verbosity=0;
-fission httptrigger delete --name get-census-by-inc --ignorenotfound --verbosity=0;
+fission function delete --name get-index --ignorenotfound --verbosity=0;
+fission httptrigger delete --name get-index --ignorenotfound --verbosity=0;
 
 # These are fundamental, we should try to force their recreation but also warn if they could not be found.
 # fission env delete -f --name python --verbosity=0;
