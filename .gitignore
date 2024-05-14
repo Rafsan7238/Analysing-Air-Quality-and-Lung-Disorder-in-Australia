@@ -5,7 +5,7 @@
 .ssh
 .vscode-server
 .dev
-*.zip
+backend.zip
 .tool-versions
 .vscode
 apt-get
@@ -22,3 +22,6 @@ frontend/.idea/modules.xml
 .venv
 backend/harvesters/addobservations.zip
 backend/harvesters/mharvester.zip
+backend/__pycache__/__init__.cpython-311.pyc
+backend/__pycache__/constants.cpython-311.pyc
+backend/__pycache__/elastic_client_provider.cpython-311.pyc

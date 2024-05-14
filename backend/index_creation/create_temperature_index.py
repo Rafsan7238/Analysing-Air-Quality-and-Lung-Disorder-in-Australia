@@ -1,8 +1,5 @@
-from constants import RAINFALL_ADELAIDE
-
-def create_rainfall_adelaide_index(es_client):
-    if not es_client.indices.exists(index=RAINFALL_ADELAIDE):
-        '''Create RAINFALL_ADELAIDE index'''
+def create_temperature_index(es_client, index_name):
+    if not es_client.indices.exists(index=index_name):
         body = {
             "settings": {
                 "index": {
@@ -12,20 +9,20 @@ def create_rainfall_adelaide_index(es_client):
             },
             "mappings": {
                 "properties": {
-                    "Month": {
+                    "Bureau of Meteorology station number": {
                         "type": "long"
                     },
-                    "Monthly Precipitation Total (millimetres)": {
+                    "Mean maximum temperature (°C)": {
                         "type": "double"
+                    },
+                    "Month": {
+                        "type": "long"
                     },
                     "Product code": {
                         "type": "keyword"
                     },
                     "Quality": {
                         "type": "keyword"
-                    },
-                    "Station number": {
-                        "type": "long"
                     },
                     "Year": {
                         "type": "long"
@@ -35,7 +32,7 @@ def create_rainfall_adelaide_index(es_client):
         }
 
         es_client.indices.create(
-            index=RAINFALL_ADELAIDE,
+            index=index_name,
             body = body
         )
         return "Created"

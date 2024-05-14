@@ -1,5 +1,20 @@
+    FOR COMP90024 ASSIGNMENT 2
+    BY TEAM 45: 
+        William Chen 1400081
+        Petr Andreev 1375858
+        Rafsan Al Mamun 1407776
+        Ojaswi Dheer 1447227
+
 # COMP90024_Assignment-2
 This repo contains the assignment 2 files for COMP90024: Cluster and Cloud Programming at the University of Melbourne.
+
+## Usage
+### Seeing function logs
+ - You can see the running logs of the repeating harvesters by using the lines 
+
+    `fission function log -f --name bom_harvester_repeater`
+    `fission function log -f --name mastodon_harvester_repeater`
+
 
 ## Environment
 Install stuff, set up clusters, install software.

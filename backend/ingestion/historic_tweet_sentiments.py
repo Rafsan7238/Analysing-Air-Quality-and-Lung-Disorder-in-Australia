@@ -1,7 +1,6 @@
-import json, os
 from constants import HIST_TWEET_INDEX_NAME
 
-def insert(es, bulker):        
+def insert(es, bulker, data):        
     if not es.indices.exists(index=HIST_TWEET_INDEX_NAME):
         return f'{HIST_TWEET_INDEX_NAME} index does not exist'
 
@@ -12,8 +11,6 @@ def insert(es, bulker):
         return f'{HIST_TWEET_INDEX_NAME} already has data. Please delete before attempting re-insertion.'
 
     try:
-        with open('../userfunc/deployarchive/data/historic_tweet_sentiments.json', 'r') as f:
-            data = json.load(f)
         inserts = []
         for entry in data['entries']:
             insert = {
@@ -27,7 +24,7 @@ def insert(es, bulker):
             }
             inserts.append(insert)
         
-        bulker.bulk(es, inserts, index=HIST_TWEET_INDEX_NAME)
+        result = bulker.bulk(es, inserts, index=HIST_TWEET_INDEX_NAME)
     except Exception as e:
         return f'{e}'
-    return 'success'
+    return result

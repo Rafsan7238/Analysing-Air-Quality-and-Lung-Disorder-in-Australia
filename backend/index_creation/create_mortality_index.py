@@ -1,8 +1,5 @@
-from constants import TEMPERATURE_BRISBANE
-
-def create_temperature_brisbane_index(es_client):
-    if not es_client.indices.exists(index=TEMPERATURE_BRISBANE):
-        '''Create TEMPERATURE_BRISBANE index'''
+def create_mortality_index(es_client, mortality_index_name):
+    if not es_client.indices.exists(index=mortality_index_name):
         body = {
             "settings": {
                 "index": {
@@ -12,22 +9,25 @@ def create_temperature_brisbane_index(es_client):
             },
             "mappings": {
                 "properties": {
-                    "Bureau of Meteorology station number": {
+                    "all_cancer_population": {
                         "type": "long"
                     },
-                    "Mean maximum temperature (°C)": {
+                    "all_cancer_total_mortality": {
+                        "type": "long"
+                    },
+                    "gccsa_code": {
+                        "type": "keyword"
+                    },
+                    "gccsa_name": {
+                        "type": "keyword"
+                    },
+                    "lung_cancer_population": {
+                        "type": "long"
+                    },
+                    "lung_cancer_rate_per_100k": {
                         "type": "double"
                     },
-                    "Month": {
-                        "type": "long"
-                    },
-                    "Product code": {
-                        "type": "keyword"
-                    },
-                    "Quality": {
-                        "type": "keyword"
-                    },
-                    "Year": {
+                    "lung_cancer_total_mortality": {
                         "type": "long"
                     }
                 }
@@ -35,7 +35,7 @@ def create_temperature_brisbane_index(es_client):
         }
 
         es_client.indices.create(
-            index=TEMPERATURE_BRISBANE,
+            index=mortality_index_name,
             body = body
         )
         return "Created"

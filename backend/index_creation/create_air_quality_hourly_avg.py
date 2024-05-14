@@ -6,7 +6,7 @@ def create_air_quality_hourly_average(es_client):
         body = {
             "settings": {
                 "index": {
-                    "number_of_shards": 10, # 765202 rows, deserves multiple shards
+                    "number_of_shards": 3, # 765202 rows, deserves multiple shards
                     "number_of_replicas": 1
                 }
             },

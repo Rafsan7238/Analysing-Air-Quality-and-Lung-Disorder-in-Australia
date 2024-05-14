@@ -1,8 +1,5 @@
-from constants import TEMPERATURE_PERTH
-
-def create_temperature_perth_index(es_client):
-    if not es_client.indices.exists(index=TEMPERATURE_PERTH):
-        '''Create TEMPERATURE_PERTH index'''
+def create_rainfall_index(es_client, index_name):
+    if not es_client.indices.exists(index=index_name):
         body = {
             "settings": {
                 "index": {
@@ -12,20 +9,20 @@ def create_temperature_perth_index(es_client):
             },
             "mappings": {
                 "properties": {
-                    "Bureau of Meteorology station number": {
-                        "type": "long"
-                    },
-                    "Mean maximum temperature (°C)": {
-                        "type": "double"
-                    },
                     "Month": {
                         "type": "long"
+                    },
+                    "Monthly Precipitation Total (millimetres)": {
+                        "type": "double"
                     },
                     "Product code": {
                         "type": "keyword"
                     },
                     "Quality": {
                         "type": "keyword"
+                    },
+                    "Station number": {
+                        "type": "long"
                     },
                     "Year": {
                         "type": "long"
@@ -35,7 +32,7 @@ def create_temperature_perth_index(es_client):
         }
 
         es_client.indices.create(
-            index=TEMPERATURE_PERTH,
+            index=index_name,
             body = body
         )
         return "Created"
