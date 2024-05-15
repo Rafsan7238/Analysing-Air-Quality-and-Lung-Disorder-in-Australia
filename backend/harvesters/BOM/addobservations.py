@@ -47,7 +47,7 @@ def main():
 
 
         # depending on testing function specified in metadata file, run the specfied function for the correspondning test 
-        future_to_result = {executor.submit(call_bom, val['_source']['station_name'], val['_source'][' url']): val for val in url_list}
+        future_to_result = {executor.submit(call_bom, val['_source']['station_name'], val['_source']['url']): val for val in url_list}
 
         for future in concurrent.futures.as_completed(future_to_result):
             result = future_to_result[future]
