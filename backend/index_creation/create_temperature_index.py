@@ -1,13 +1,10 @@
-from constants import TEMPERATURE_BRISBANE
-
-def create_temperature_brisbane_index(es_client):
-    if not es_client.indices.exists(index=TEMPERATURE_BRISBANE):
-        '''Create TEMPERATURE_BRISBANE index'''
+def create_temperature_index(es_client, index_name):
+    if not es_client.indices.exists(index=index_name):
         body = {
             "settings": {
                 "index": {
                     "number_of_shards": 1,
-                    "number_of_replicas": 3
+                    "number_of_replicas": 1
                 }
             },
             "mappings": {
@@ -35,7 +32,7 @@ def create_temperature_brisbane_index(es_client):
         }
 
         es_client.indices.create(
-            index=TEMPERATURE_BRISBANE,
+            index=index_name,
             body = body
         )
         return "Created"

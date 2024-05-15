@@ -1,13 +1,10 @@
-from constants import RAINFALL_CANBERRA
-
-def create_rainfall_canberra_index(es_client):
-    if not es_client.indices.exists(index=RAINFALL_CANBERRA):
-        '''Create RAINFALL_CANBERRA index'''
+def create_rainfall_index(es_client, index_name):
+    if not es_client.indices.exists(index=index_name):
         body = {
             "settings": {
                 "index": {
                     "number_of_shards": 1,
-                    "number_of_replicas": 3
+                    "number_of_replicas": 1
                 }
             },
             "mappings": {
@@ -35,7 +32,7 @@ def create_rainfall_canberra_index(es_client):
         }
 
         es_client.indices.create(
-            index=RAINFALL_CANBERRA,
+            index=index_name,
             body = body
         )
         return "Created"

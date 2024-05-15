@@ -4,12 +4,15 @@ from mastodon import Mastodon
 import json, time
 from elasticsearch8 import Elasticsearch
 from elasticsearch8 import helpers
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 def parse_json(msgs):
     new_msgs = []
     keys = ['content', 'created_at', 'id']
+    current_app.logger.info('creating analyzer')
+    analyzer = SentimentIntensityAnalyzer()
 
-    for msg in msgs:
+    for msg in msgs: 
         new_msg = {}
         for key in keys:
             if key == "created_at":
@@ -21,7 +24,12 @@ def parse_json(msgs):
                     new_msg[key] = None
             else:
                 new_msg[key] = msg.get(key)
-
+        try:
+            current_app.logger.info('analyzing')
+            new_msg['sentiment'] = analyzer.polarity_scores(new_msg['content']).get('compound')
+        except:
+            current_app.logger.info('failed analyzer')
+            new_msg['sentiment'] = 0
         new_msgs.append(new_msg)
     return new_msgs
 
@@ -77,17 +85,10 @@ def main():
         lastid= m.timeline(timeline='public', since_id=None, limit=1, remote=True)[0]['id']
         time.sleep(5)
 
-
-
-   
-
-
     msg = json.loads(json.dumps(m.timeline(timeline='public', since_id=lastid, limit=100, remote=True), default=str))
     parsed_msgs = parse_json(msg)
 
     current_app.logger.info(f'Got {len(parsed_msgs)} messages')
-
-
 
     for msg in parsed_msgs:
         # helpers.bulk(elastic_client, generate_docs(parsed_msgs))
@@ -96,6 +97,8 @@ def main():
                         id=f"{msg['id']}",
                         body=msg
                     )
+        
+    return 'ok'
                 
 
 

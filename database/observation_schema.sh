@@ -4,8 +4,8 @@ curl -XPUT -k 'https://127.0.0.1:9200/observations' \
    --data '{
     "settings": {
         "index": {
-            "number_of_shards": 10,
-            "number_of_replicas": 3
+            "number_of_shards": 3,
+            "number_of_replicas": 1
         }
     },
     "mappings": {

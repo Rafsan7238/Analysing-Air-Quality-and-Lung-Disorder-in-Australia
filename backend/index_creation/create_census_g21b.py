@@ -7,7 +7,7 @@ def create_census_g21b(es_client):
             "settings": {
                 "index": { 
                     "number_of_shards": 1,
-                    "number_of_replicas": 3
+                    "number_of_replicas": 1
                 }
             },
             "mappings": {
