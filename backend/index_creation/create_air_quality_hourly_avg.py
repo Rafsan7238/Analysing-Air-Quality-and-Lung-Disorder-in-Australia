@@ -11,6 +11,7 @@ def create_air_quality_hourly_average(es_client):
                 }
             },
             "mappings": {
+                "dynamic": "strict",
                 "properties": {
                     "date": {"type": "keyword"},
                     "latitude": {"type": "double"},

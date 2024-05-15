@@ -8,6 +8,7 @@ def create_rainfall_index(es_client, index_name):
                 }
             },
             "mappings": {
+                "dynamic": "strict",
                 "properties": {
                     "Month": {
                         "type": "long"

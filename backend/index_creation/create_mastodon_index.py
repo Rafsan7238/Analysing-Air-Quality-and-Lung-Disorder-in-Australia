@@ -11,6 +11,7 @@ def create_mastodon_index(es_client):
                 }
             },
             "mappings": {
+                "dynamic": "strict",
                 "properties": {
                     "id": {
                         "type": "text"

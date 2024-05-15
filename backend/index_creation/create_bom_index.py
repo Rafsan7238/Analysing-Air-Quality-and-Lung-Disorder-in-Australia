@@ -11,6 +11,7 @@ def create_bom_index(es_client):
                 }
             },
             "mappings": {
+                "dynamic": "strict",
                 "properties": {
                     "wmo": {
                         "type": "text"

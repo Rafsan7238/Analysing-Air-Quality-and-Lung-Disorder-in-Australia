@@ -38,6 +38,3 @@ fission timetrigger delete --name mastodon-harvester-repeater --ignorenotfound -
 fission package delete --name addobservations -f --ignorenotfound --verbosity=0;
 fission package delete --name mharvester -f --ignorenotfound --verbosity=0;
 
-# These are fundamental, we should try to force their recreation but also warn if they could not be found.
-fission env delete -f --name python --verbosity=0;
-fission env delete -f --name nodejs --verbosity=0;

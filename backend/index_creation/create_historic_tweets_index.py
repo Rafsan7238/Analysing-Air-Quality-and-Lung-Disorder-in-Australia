@@ -11,6 +11,7 @@ def create_historic_tweets_index(es_client):
                 }
             },
             "mappings": {
+                "dynamic": "strict",
                 "properties": {
                     'day': {"type": "integer"},
                     'month': {"type": "integer"},

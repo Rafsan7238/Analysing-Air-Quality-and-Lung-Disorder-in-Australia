@@ -14,7 +14,6 @@ def insert(es, bulker, data):
         inserts = []
         for _, row in data.items():
             insert = {
-                'create': {
                 "assistance_needed_asthma": row['assistance_needed_asthma'],
                 "assistance_needed_copd": row['assistance_needed_copd'],
                 "employed_copd":row['employed_copd'] ,
@@ -38,7 +37,6 @@ def insert(es, bulker, data):
                 "weekly_income_650_999_copd":row['weekly_income_650_999_copd'] ,
                 "weekly_income_nil_asthma":row['weekly_income_nil_asthma'],
                 "weekly_income_nil_copd":row['weekly_income_nil_copd'] 
-                }
             }
             inserts.append(insert)
             

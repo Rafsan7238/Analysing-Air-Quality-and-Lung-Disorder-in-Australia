@@ -12,14 +12,12 @@ def insert(es, bulker, data, index_name):
         inserts = []
         for _, row in data.items():
             insert = {
-                'create': {
-                    "Month": row['Month'],
-                    "Monthly Precipitation Total (millimetres)": row['Monthly Precipitation Total (millimetres)'],
-                    "Product code": row['Product code'],
-                    "Quality": row['Quality'],
-                    "Station number": row['Station number'],
-                    "Year": row['Year']
-                }
+                "Month": row['Month'],
+                "Monthly Precipitation Total (millimetres)": row['Monthly Precipitation Total (millimetres)'],
+                "Product code": row['Product code'],
+                "Quality": row['Quality'],
+                "Station number": row['Station number'],
+                "Year": row['Year']
             }
             inserts.append(insert)
             

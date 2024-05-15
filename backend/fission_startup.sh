@@ -1,9 +1,5 @@
 # Recreate Fission Objects
 
-### ENV SETUP
-fission env create --name python --builder fission/python-builder-3.9 --image fission/python-env-3.9 --verbosity=0;
-fission env create --name nodejs --image fission/node-env --builder fission/node-builder --verbosity=0;
-
 ### PACKAGE
 (   cd backend/;   zip -r backend.zip .;   mv backend.zip ../; )
 fission package create --sourcearchive backend.zip --env python --name backend --buildcmd './build.sh' --verbosity=0;
@@ -20,7 +16,7 @@ fission route create --method POST --url "/indexes/create/all" --function create
 ### BOM HARVESTER PACKAGE
 (   cd backend/harvesters/BOM/;   zip -r addobservations.zip .;   mv addobservations.zip ../; )
 fission package create --sourcearchive backend/harvesters/addobservations.zip  --env python  --name addobservations  --buildcmd './build.sh' --verbosity=0;
-fission fn create --name addobservations  --pkg addobservations  --env python  --entrypoint "addobservations.main" --verbosity=0; 
+fission fn create --name addobservations  --pkg addobservations  --env python  --entrypoint "addobservations.main" --fntimeout 360 --verbosity=0; 
 fission timer create --name bom-harvester-repeater --function addobservations --cron "@every 15m" --verbosity=0;
 
 ### MASTODON HARVESTER
