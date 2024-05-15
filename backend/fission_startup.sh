@@ -5,6 +5,7 @@ fission env create --name python --builder fission/python-builder-3.9 --image fi
 fission env create --name nodejs --image fission/node-env --builder fission/node-builder --verbosity=0;
 
 ### PACKAGE
+(   cd backend/;   zip -r backend.zip .;   mv backend.zip ../; )
 fission package create --sourcearchive backend.zip --env python --name backend --buildcmd './build.sh' --verbosity=0;
 
 ### HEALTHCHECK
@@ -27,6 +28,18 @@ fission timer create --name bom-harvester-repeater --function addobservations --
 fission package create --sourcearchive backend/harvesters/mharvester.zip  --env python  --name mharvester  --buildcmd './build.sh' --verbosity=0;
 fission fn create --name mharvester  --pkg mharvester  --env python  --entrypoint "mharvester.main" --fntimeout 240 --verbosity=0;
 fission timer create --name mastodon-harvester-repeater --function mharvester --cron "@every 5m" --verbosity=0;
+
+# ### GET ASTMA BY REGION 
+fission fn create --name get-air-quality-hourly-avg --pkg backend --env python --entrypoint "backend.get_air_quality_hourly_avg" --verbosity=0;
+fission route create --url "/air-quality-hourly-avg" --function get-air-quality-hourly-avg --name get-air-quality-hourly-avg --createingress --verbosity=0;
+
+fission fn create --name get-index --pkg backend --env python --entrypoint "backend.get_index" --verbosity=0;
+
+(
+  fission route create --name get-index --function get-index \
+    --method GET \
+    --url '/datasets/{index}'
+)
 
 fission fn create --name insert-indexes --pkg backend --env python --entrypoint "backend.insert_indexes" --fntimeout 120 --verbosity=0;
 

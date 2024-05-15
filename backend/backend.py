@@ -1,5 +1,5 @@
 import json
-from flask import request
+from flask import request, jsonify
 from constants import *
 from elastic_client_provider import get_bulker, get_client
 
@@ -125,28 +125,81 @@ def create_indexes_endpoint():
         return json.dumps(str(e)), 500
 
 
-### ^^ insert x endpoint()
 
 ###############################
 # air quality vs lung disease 
+def query_elastic(index, query):
+
+    es = get_client()
+    list_of_docs = []
+
+    # Initialize the scroll
+    scroll = es.search(
+        index=index,
+        body=query,
+        scroll='2m',  # Keep the search context alive for 2 minutes
+        size=10000  # Number of results per page
+    )
+
+    # Keep track of the scroll ID
+    scroll_id = scroll['_scroll_id']
+
+    # Fetch the initial page of results
+    for doc in scroll['hits']['hits']:
+        print("DOC", doc)
+        list_of_docs.append(doc['_source'])
+    print("len", len(list_of_docs))
+    # Use the scroll ID to fetch the next batch of documents
+    while True:
+        response = es.scroll(scroll_id=scroll_id, scroll='2m')
+        print('response', response)
+        # Break the loop if there are no more documents
+        if not response['hits']['hits']:
+            break
+        
+        for doc in response['hits']['hits']:
+            list_of_docs.append(doc['_source'])
+        print("len", len(list_of_docs))
+    # Clean up the scroll context
+    es.clear_scroll(scroll_id=scroll_id)
+    return list_of_docs
 
 def get_air_quality_hourly_avg():
     # get 2022_All_sites_air_quality_hourly_avg, 
     # select parameter_names = ['CO', 'PM10', 'PM2.5', 'O3', 'SO2']
     try: 
-        es = get_client()
-        bulker = get_bulker()
-
+        selected_parameters = ['CO', 'PM10', 'PM2.5', 'O3', 'SO2']
+        query = {"query": {"terms": {"parameter_name": selected_parameters}}}
+        list_of_docs = query_elastic("air_quality_hourly_avg", query)
+        print('returned', list_of_docs)
+        return jsonify({"success": True, "data": list_of_docs}), 200
 
     except Exception as e:
-        return json.dumps(e)
+        return json.dumps(str(e)) 
     
 
-    pass
-
-
-def get_lung_cancer_join():
+def get_index():
     # get all lung cancer data aihw_cimar_mortality_persons_gccsa_2009
+ 
+    try: 
+        print('starting')
+
+        try:
+            index= request.headers['X-Fission-Params-Index']
+        except KeyError:
+            print(request.headers)
+            index= None
+
+
+        print("index", index)
+        
+        query = {"query": {"match_all": {}}}
+        list_of_docs = query_elastic(index, query)
+        print('list_of_docs', list_of_docs)
+        return jsonify({"success": True, "data": list_of_docs}), 200
+
+    except Exception as e:
+        return jsonify({"success": False, "data": json.dumps(str(e))}), 400
     # merge with census_by_cob_data abs_2021census_g21a_aust_gccsa
     # join on inner, ['gccsa_code', 'gccsa_name']
     pass 
