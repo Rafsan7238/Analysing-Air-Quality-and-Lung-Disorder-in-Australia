@@ -42,8 +42,8 @@ This repo contains the assignment 2 files for COMP90024: Cluster and Cloud Progr
 ### Seeing function logs
  - You can see the running logs of the repeating harvesters by using the lines 
 
-    `fission function log -f --name bom_harvester_repeater`
-    `fission function log -f --name mastodon_harvester_repeater`
+    `fission function log -f --name addobservations`
+    `fission function log -f --name mharvester`
 
 ## Usage
 ### Static data manipulation

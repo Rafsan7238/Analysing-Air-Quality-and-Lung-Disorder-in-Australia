@@ -23,6 +23,9 @@ fission package delete --name backend -f --ignorenotfound --verbosity=0; # force
 fission function delete --name addobservations --ignorenotfound --verbosity=0;
 fission function delete --name mharvester --ignorenotfound --verbosity=0;
 
+fission timetrigger delete --name bom-harvester-repeater --ignorenotfound --verbosity=0;
+fission timetrigger delete --name mastodon-harvester-repeater --ignorenotfound --verbosity=0;
+
 fission package delete --name addobservations -f --ignorenotfound --verbosity=0;
 fission package delete --name mharvester -f --ignorenotfound --verbosity=0;
 

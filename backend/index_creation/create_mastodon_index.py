@@ -21,6 +21,9 @@ def create_mastodon_index(es_client):
                     "created_at": {
                         "type": "date",
                         "format": "yyyy-MM-dd HH:mm:ss"
+                    },
+                    "sentiment": {
+                        "type":"double"
                     }
                 }
             }

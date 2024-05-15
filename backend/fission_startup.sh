@@ -18,20 +18,20 @@ fission route create --method POST --url "/indexes/create/all" --function create
 
 ### BOM HARVESTER PACKAGE
 (   cd backend/harvesters/BOM/;   zip -r addobservations.zip .;   mv addobservations.zip ../; )
-fission package create --sourcearchive backend/harvesters/addobservations.zip  --env python  --name addobservations  --buildcmd './build.sh'
-fission fn create --name addobservations  --pkg addobservations  --env python  --entrypoint "addobservations.main" 
-fission timer create --name bom-harvester-repeater --function addobservations --cron "@every 15m"
+fission package create --sourcearchive backend/harvesters/addobservations.zip  --env python  --name addobservations  --buildcmd './build.sh' --verbosity=0;
+fission fn create --name addobservations  --pkg addobservations  --env python  --entrypoint "addobservations.main" --verbosity=0; 
+fission timer create --name bom-harvester-repeater --function addobservations --cron "@every 15m" --verbosity=0;
 
 ### MASTODON HARVESTER
 (   cd backend/harvesters/Mastodon/;   zip -r mharvester.zip .;   mv mharvester.zip ../; )
-fission package create --sourcearchive backend/harvesters/mharvester.zip  --env python  --name mharvester  --buildcmd './build.sh'
-fission fn create --name mharvester  --pkg mharvester  --env python  --entrypoint "mharvester.main" 
-fission timer create --name mastodon-harvester-repeater --function mharvester --cron "@every 5m"
+fission package create --sourcearchive backend/harvesters/mharvester.zip  --env python  --name mharvester  --buildcmd './build.sh' --verbosity=0;
+fission fn create --name mharvester  --pkg mharvester  --env python  --entrypoint "mharvester.main" --fntimeout 240 --verbosity=0;
+fission timer create --name mastodon-harvester-repeater --function mharvester --cron "@every 5m" --verbosity=0;
 
-fission fn create --name insert-indexes --pkg backend --env python --entrypoint "backend.insert_indexes" --verbosity=0  --fntimeout 120;
+fission fn create --name insert-indexes --pkg backend --env python --entrypoint "backend.insert_indexes" --fntimeout 120 --verbosity=0;
 
 (
   fission route create --name insert-indexes --function insert-indexes \
     --method POST \
-    --url '/elastic/{index}/documents'
+    --url '/elastic/{index}/documents' --verbosity=0;
 )
