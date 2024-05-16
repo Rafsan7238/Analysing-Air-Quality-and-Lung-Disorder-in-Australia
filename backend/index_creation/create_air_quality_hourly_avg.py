@@ -13,16 +13,18 @@ def create_air_quality_hourly_average(es_client):
             "mappings": {
                 "dynamic": "strict",
                 "properties": {
-                    "date": {"type": "keyword"},
+                    "date": {
+                            "type": "date",
+                            "format": "dd/MM/yy"
+                        },                    
                     "latitude": {"type": "double"},
-                    "location": {"type": "geo_point"},
                     "location_name": {"type": "keyword"},
                     "longitude": {"type": "double"},
-                    "parameter_description": {"type": "text"},
+                    "parameter_description": {"type": "keyword"},
                     "parameter_method_name": {"type": "keyword"},
                     "parameter_name": {"type": "keyword"},
                     "time": {"type": "keyword"},
-                    "value": { "type": "double"}
+                    "value": { "type": "float"}
                     }
                 }
         }

@@ -1,5 +1,6 @@
 import json
 from flask import request, jsonify
+from querying.make_query import make_query
 from constants import *
 from elastic_client_provider import get_bulker, get_client
 
@@ -130,7 +131,20 @@ def create_indexes_endpoint():
     except Exception as e:
         return json.dumps(str(e)), 500
 
+###############################
+def make_query_endpoint():
+    es = get_client()
 
+    try:
+        data = request.json
+    except KeyError:
+        return 'failed to parse request json body', 400
+
+    try:
+        res = make_query(es, data)
+        return jsonify({'result': res}), 200
+    except Exception as e:
+        return jsonify({"Query failed": str(e)}), 500
 
 ###############################
 # air quality vs lung disease 

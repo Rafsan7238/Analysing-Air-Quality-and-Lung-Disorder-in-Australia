@@ -44,3 +44,6 @@ fission fn create --name insert-indexes --pkg backend --env python --entrypoint 
     --method POST \
     --url '/elastic/{index}/documents' --verbosity=0;
 )
+
+fission fn create --name make-sql-query --pkg backend --env python --entrypoint "backend.make_query_endpoint" --verbosity=0;
+fission route create --method POST --url "/sql/query" --function make-sql-query --name make-sql-query --createingress --verbosity=0;

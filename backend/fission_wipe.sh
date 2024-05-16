@@ -35,6 +35,9 @@ fission function delete --name mharvester --ignorenotfound --verbosity=0;
 fission timetrigger delete --name bom-harvester-repeater --ignorenotfound --verbosity=0;
 fission timetrigger delete --name mastodon-harvester-repeater --ignorenotfound --verbosity=0;
 
+fission httptrigger delete --name make-sql-query  --ignorenotfound --verbosity=0;
+fission function delete --name make-sql-query --ignorenotfound --verbosity=0;
+
 fission package delete --name addobservations -f --ignorenotfound --verbosity=0;
 fission package delete --name mharvester -f --ignorenotfound --verbosity=0;
 
