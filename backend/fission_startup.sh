@@ -1,6 +1,8 @@
 # Recreate Fission Objects
 
 ### PACKAGE
+rm -f *.zip
+
 (   cd backend/;   zip -r backend.zip .;   mv backend.zip ../; )
 fission package create --sourcearchive backend.zip --env python --name backend --buildcmd './build.sh' --verbosity=0;
 
@@ -25,10 +27,6 @@ fission package create --sourcearchive backend/harvesters/mharvester.zip  --env 
 fission fn create --name mharvester  --pkg mharvester  --env python  --entrypoint "mharvester.main" --fntimeout 240 --verbosity=0;
 fission timer create --name mastodon-harvester-repeater --function mharvester --cron "@every 5m" --verbosity=0;
 
-# ### GET ASTMA BY REGION 
-fission fn create --name get-air-quality-hourly-avg --pkg backend --env python --entrypoint "backend.get_air_quality_hourly_avg" --verbosity=0;
-fission route create --url "/air-quality-hourly-avg" --function get-air-quality-hourly-avg --name get-air-quality-hourly-avg --createingress --verbosity=0;
-
 fission fn create --name get-index --pkg backend --env python --entrypoint "backend.get_index" --verbosity=0;
 
 (
@@ -47,3 +45,10 @@ fission fn create --name insert-indexes --pkg backend --env python --entrypoint 
 
 fission fn create --name make-sql-query --pkg backend --env python --entrypoint "backend.make_query_endpoint" --verbosity=0;
 fission route create --method POST --url "/sql/query" --function make-sql-query --name make-sql-query --createingress --verbosity=0;
+
+fission fn create --name get-air-quality-data --pkg backend --env python --entrypoint "backend.air_quality_endpoint" --verbosity=0;
+(
+  fission route create --name get-air-quality-data --function get-air-quality-data \
+    --method GET \
+    --url '/data/air_quality/{resource}' --verbosity=0;
+)

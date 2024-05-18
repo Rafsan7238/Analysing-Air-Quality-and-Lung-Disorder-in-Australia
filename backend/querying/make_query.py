@@ -1,6 +1,5 @@
-def make_query(es, data):
-    query = data['query']
-    response = es.sql.query(query=query, format='json', fetch_size=1000)
+def make_query(es, query):
+    response = es.sql.query(query=query, format='json', fetch_size=5000)
     return_rows = response['rows']
     columns = [col_def['name'] for col_def in response['columns']]
 

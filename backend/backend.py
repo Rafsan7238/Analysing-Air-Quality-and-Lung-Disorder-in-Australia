@@ -1,5 +1,7 @@
 import json
 from flask import request, jsonify
+from querying.air_quality_analysis_queries import *
+from querying.query_path_constants import *
 from querying.make_query import make_query
 from constants import *
 from elastic_client_provider import get_bulker, get_client
@@ -132,6 +134,34 @@ def create_indexes_endpoint():
         return json.dumps(str(e)), 500
 
 ###############################
+
+def air_quality_endpoint():
+    try:
+        resource = request.headers['X-Fission-Params-Resource']
+        # if('X-Fission-Params-SubResource' in request.headers.keys()):
+        #     sub_resource = request.headers['X-Fission-Params-SubResource']
+
+    except KeyError:
+        return jsonify({'Resource not found in headers': str(request.headers)}), 400
+
+    es = get_client()
+    
+    try:
+        if resource == SUMMARY_STATS_BY_PARAM:
+            return jsonify({'result': get_air_quality_hourly_summary_stats_by_parameter(es)}), 200
+        elif resource == SUMMARY_STATS_BY_LOC:
+            return jsonify({'result': get_air_quality_hourly_summary_stats_by_location(es)}), 200
+        elif resource == DATA_DIST:
+            return jsonify({'result': get_air_quality_data_dist(es)}), 200
+        elif resource == FOR_STATISTICAL_ANALYSIS:
+            return jsonify({'result': get_air_quality_hourly_for_statistical(es)}), 200
+        elif resource == FOR_SPATIAL_ANALYSIS:
+            return jsonify({'result': get_air_quality_hourly_for_spatial(es)}), 200
+        else:
+            return jsonify({'Resource in headers is not valid': resource}), 400
+    except Exception as e:
+        return json.dumps(str(e)), 500
+
 def make_query_endpoint():
     es = get_client()
 
@@ -141,8 +171,11 @@ def make_query_endpoint():
         return 'failed to parse request json body', 400
 
     try:
-        res = make_query(es, data)
-        return jsonify({'result': res}), 200
+        if data is not None:
+            res = make_query(es, data['query'])
+            return jsonify({'result': res}), 200
+        else:
+            return jsonify({'result': 'No data in body'}), 400
     except Exception as e:
         return jsonify({"Query failed": str(e)}), 500
 

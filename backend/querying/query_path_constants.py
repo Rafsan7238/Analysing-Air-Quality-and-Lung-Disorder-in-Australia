@@ -1,0 +1,5 @@
+SUMMARY_STATS_BY_PARAM = 'summary_stats_param'
+SUMMARY_STATS_BY_LOC = 'summary_stats_loc'
+DATA_DIST = 'data_distribution'
+FOR_STATISTICAL_ANALYSIS = 'stat_analysis'
+FOR_SPATIAL_ANALYSIS = 'spatial_analysis'
