@@ -27,7 +27,7 @@ import ingestion.stations
 import ingestion.temperature
 import ingestion.mortality
 
-def insert_indexes():
+def insert_documents():
     try: 
         print('starting')
 
@@ -135,11 +135,29 @@ def create_indexes_endpoint():
 
 ###############################
 
+def select_all_from_index():
+    try:
+        index = request.headers['X-Fission-Params-Index']
+    except KeyError:
+        return jsonify({'Index not found in headers': str(request.headers)}), 400
+    
+    es = get_client()
+
+    if index == AIR_QUALITY_HOURLY_AVG:
+        return jsonify({'result': "Select all is not allowed for this index"}), 400
+    
+    query = f"""
+        SELECT * FROM {index}
+    """
+
+    try:
+        return jsonify({'result': make_query(es, query)}), 200
+    except Exception as e:
+        return json.dumps(str(e)), 500
+
 def air_quality_endpoint():
     try:
         resource = request.headers['X-Fission-Params-Resource']
-        # if('X-Fission-Params-SubResource' in request.headers.keys()):
-        #     sub_resource = request.headers['X-Fission-Params-SubResource']
 
     except KeyError:
         return jsonify({'Resource not found in headers': str(request.headers)}), 400
@@ -178,113 +196,3 @@ def make_query_endpoint():
             return jsonify({'result': 'No data in body'}), 400
     except Exception as e:
         return jsonify({"Query failed": str(e)}), 500
-
-###############################
-# air quality vs lung disease 
-def query_elastic(index, query):
-
-    es = get_client()
-    list_of_docs = []
-
-    # Initialize the scroll
-    scroll = es.search(
-        index=index,
-        body=query,
-        scroll='2m',  # Keep the search context alive for 2 minutes
-        size=10000  # Number of results per page
-    )
-
-    # Keep track of the scroll ID
-    scroll_id = scroll['_scroll_id']
-
-    # Fetch the initial page of results
-    for doc in scroll['hits']['hits']:
-        print("DOC", doc)
-        list_of_docs.append(doc['_source'])
-    print("len", len(list_of_docs))
-    # Use the scroll ID to fetch the next batch of documents
-    while True:
-        response = es.scroll(scroll_id=scroll_id, scroll='2m')
-        print('response', response)
-        # Break the loop if there are no more documents
-        if not response['hits']['hits']:
-            break
-        
-        for doc in response['hits']['hits']:
-            list_of_docs.append(doc['_source'])
-        print("len", len(list_of_docs))
-    # Clean up the scroll context
-    es.clear_scroll(scroll_id=scroll_id)
-    return list_of_docs
-
-def get_air_quality_hourly_avg():
-    # get 2022_All_sites_air_quality_hourly_avg, 
-    # select parameter_names = ['CO', 'PM10', 'PM2.5', 'O3', 'SO2']
-    try: 
-        selected_parameters = ['CO', 'PM10', 'PM2.5', 'O3', 'SO2']
-        query = {"query": {"terms": {"parameter_name": selected_parameters}}}
-        list_of_docs = query_elastic("air_quality_hourly_avg", query)
-        print('returned', list_of_docs)
-        return jsonify({"success": True, "data": list_of_docs}), 200
-
-    except Exception as e:
-        return json.dumps(str(e)) 
-    
-
-def get_index():
-    # get all lung cancer data aihw_cimar_mortality_persons_gccsa_2009
- 
-    try: 
-        print('starting')
-
-        try:
-            index= request.headers['X-Fission-Params-Index']
-        except KeyError:
-            print(request.headers)
-            index= None
-
-
-        print("index", index)
-        
-        query = {"query": {"match_all": {}}}
-        list_of_docs = query_elastic(index, query)
-        print('list_of_docs', list_of_docs)
-        return jsonify({"success": True, "data": list_of_docs}), 200
-
-    except Exception as e:
-        return jsonify({"success": False, "data": json.dumps(str(e))}), 400
-    # merge with census_by_cob_data abs_2021census_g21a_aust_gccsa
-    # join on inner, ['gccsa_code', 'gccsa_name']
-    pass 
-
-def get_gender_lung_cancer():
-    # get male lung cancer 
-    # get female lung cancer
-    # join on gccsa_name
-    # columns 'gccsa_name', 'Lung cancer rate per 100k'
-    # add suffix (male, female)
-    pass
-
-
-def get_census_by_inc_emp():
-    # return census data 
-    pass
-
-#############################
-# weather vs sentiment 
-
-def get_historic_tweet_sentiment():
-    # return hiostoric tweet sentiment
-    pass 
-
-def get_rainfall_data():
-    # get all cities, 
-    # group by month
-    # get mean
-    pass 
-
-def get_temperature_data():
-    # get all cities, 
-    # group by month
-    # get mean
-    pass 
