@@ -16,19 +16,32 @@ def call_bom(station_name, url):
 
 def parse_json(returned_json):
     data = returned_json['observations']['data'][0]
-    return data
 
+    insert = {}
+
+    aif_time = data['aifstime_utc']
+    year = aif_time[2:4]
+    month = aif_time[4:6]
+    day = aif_time[6:8]
+
+    insert['date'] = f'{day}/{month}/{year}'
+    insert['aifstime_utc'] = data['aifstime_utc']
+    insert['air_temp'] = data['air_temp']
+    insert['name'] = data['name']
+    insert['rain_trace'] = data['rain_trace']
+
+    return insert
 
 def main():
 
-
+    print('Function invoked')
     elastic_client = Elasticsearch (
         'https://elasticsearch-master.elastic.svc.cluster.local:9200',
         verify_certs= False,
         basic_auth=('elastic', 'elastic')
     )
 
-    
+    print('getting stations')
     # Initialize the scroll
     page = elastic_client.search(
     index='stations',
@@ -55,19 +68,20 @@ def main():
 
                 # get the data back from the test
                 data = future.result()
-                current_app.logger.info(f'Parsing observation: {data[1]}')               
+                current_app.logger.info(f'Parsing observation')               
                 observation = parse_json(data[1])
                 #ping_results.append(observation)
-                current_app.logger.info(f'Got observation')
-                current_app.logger.info(f'Pushin to elastic')
+                current_app.logger.info(f'Got observation: {observation}')
+                id = f"{observation['aifstime_utc']}-{observation['name']}"
+                current_app.logger.info(f'Pushin to elastic with id {id}')
                 res = elastic_client.index(
-                    index='observations',
-                    id=f"{observation['wmo']}-{observation['local_date_time']}",
+                    index='bom_observations',
+                    id=id,
                     body=observation
 
                 )
-                current_app.logger.info(f'Indexed observation {observation["stationid"]}-{observation["timestamp"]}')
-
+                current_app.logger.info(f'Indexed observation {id}')
+                print(f'Indexed observation {id}')
             except Exception as e:
                 print('%r generated an exception: %s' % (result, e))
 

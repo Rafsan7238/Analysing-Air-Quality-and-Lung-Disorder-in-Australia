@@ -2,11 +2,11 @@ from constants import MASTODON
 
 def create_mastodon_index(es_client):
     if not es_client.indices.exists(index=MASTODON):
-        '''Create air quality hourly avg index'''
+        '''Create mastodon index'''
         body = {
             "settings": {
                 "index": {
-                    "number_of_shards": 3, # 765202 rows, deserves multiple shards
+                    "number_of_shards": 3,
                     "number_of_replicas": 1
                 }
             },
@@ -23,6 +23,10 @@ def create_mastodon_index(es_client):
                         "type": "date",
                         "format": "yyyy-MM-dd HH:mm:ss"
                     },
+                    "date": {
+                        "type": "date",
+                        "format": "dd/MM/yy"
+                    },     
                     "sentiment": {
                         "type":"double"
                     }

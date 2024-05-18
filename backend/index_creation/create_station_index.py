@@ -6,7 +6,7 @@ def create_station_index(es_client):
         body = {
             "settings": {
                 "index": {
-                    "number_of_shards": 3, # 765202 rows, deserves multiple shards
+                    "number_of_shards": 1,
                     "number_of_replicas": 1
                 }
             },

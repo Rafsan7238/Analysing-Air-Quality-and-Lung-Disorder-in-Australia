@@ -6,7 +6,7 @@ def create_air_quality_hourly_average(es_client):
         body = {
             "settings": {
                 "index": {
-                    "number_of_shards": 3, # 765202 rows, deserves multiple shards
+                    "number_of_shards": 3,
                     "number_of_replicas": 1
                 }
             },
@@ -14,9 +14,9 @@ def create_air_quality_hourly_average(es_client):
                 "dynamic": "strict",
                 "properties": {
                     "date": {
-                            "type": "date",
-                            "format": "dd/MM/yy"
-                        },                    
+                        "type": "date",
+                        "format": "dd/MM/yy"
+                    },                    
                     "latitude": {"type": "double"},
                     "location_name": {"type": "keyword"},
                     "longitude": {"type": "double"},

@@ -36,7 +36,7 @@ def parse_json(msgs):
 
 def generate_docs(msgs):
     for msg in msgs:
-        msg['_index'] = 'mastodon'
+        msg['_index'] = 'mastodon_observations'
         yield msg
 
 def main():
@@ -54,7 +54,7 @@ def main():
 
     # get latest ID
     page = elastic_client.search(
-    index='mastodon',
+    index='mastodon_observations',
     scroll='1m',  # Length of time to keep the scroll window open    
     body={
         "query" : {
@@ -93,7 +93,7 @@ def main():
     for msg in parsed_msgs:
         # helpers.bulk(elastic_client, generate_docs(parsed_msgs))
         res = elastic_client.index(
-                        index='mastodon',
+                        index='mastodon_observations',
                         id=f"{msg['id']}",
                         body=msg
                     )
