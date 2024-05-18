@@ -1,10 +1,12 @@
 import json
 from flask import request, jsonify
+from constants import *
+from elastic_client_provider import get_bulker, get_client
+
+from querying.sentiment_weather_queries import *
 from querying.air_quality_analysis_queries import *
 from querying.query_path_constants import *
 from querying.make_query import make_query
-from constants import *
-from elastic_client_provider import get_bulker, get_client
 
 from index_creation.create_station_index import create_station_index
 from index_creation.create_bom_index import create_bom_index
@@ -177,6 +179,24 @@ def air_quality_endpoint():
             return jsonify({'result': get_air_quality_hourly_for_spatial(es)}), 200
         else:
             return jsonify({'Resource in headers is not valid': resource}), 400
+    except Exception as e:
+        return json.dumps(str(e)), 500
+
+def sentiment_weather_queries_endpoint():
+    try:
+        resource = request.headers['X-Fission-Params-Resource']
+
+    except KeyError:
+        return jsonify({'Resource not found in headers': str(request.headers)}), 400
+
+    es = get_client()
+    
+    try:
+        if resource == AVG_MONTHLY_ANALYSIS:
+            return jsonify({'result': get_averaged_by_month(es)}), 200
+        else:
+            return jsonify({'Resource in headers is not valid': resource}), 400
+        
     except Exception as e:
         return json.dumps(str(e)), 500
 

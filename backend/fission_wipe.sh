@@ -20,27 +20,26 @@ fission timetrigger delete --name mastodon-harvester-repeater --ignorenotfound -
 fission function delete --name mharvester --ignorenotfound --verbosity=0;
 fission package delete --name mharvester -f --ignorenotfound --verbosity=0;
 
-### Backend
+### Index Management
 fission httptrigger delete --name create-indexes --ignorenotfound --verbosity=0;
 fission function delete --name create-indexes --ignorenotfound --verbosity=0;
 
-fission httptrigger delete --name insert-all --ignorenotfound  --verbosity=0;
-fission function delete --name insert-all --ignorenotfound --verbosity=0;
+fission function delete --name insert-documents --ignorenotfound --verbosity=0;
+fission httptrigger delete --name insert-documents --ignorenotfound --verbosity=0;
 
-fission function delete --name insert-indexes --ignorenotfound --verbosity=0;
-fission httptrigger delete --name insert-indexes --ignorenotfound --verbosity=0;
-
-fission function delete --name get-air-quality-hourly-avg --ignorenotfound --verbosity=0;
-fission httptrigger delete --name get-air-quality-hourly-avg --ignorenotfound --verbosity=0;
-
-fission function delete --name get-index --ignorenotfound --verbosity=0;
-fission httptrigger delete --name get-index --ignorenotfound --verbosity=0;
-
+### Extraction Endpoints
 fission httptrigger delete --name make-sql-query  --ignorenotfound --verbosity=0;
 fission function delete --name make-sql-query --ignorenotfound --verbosity=0;
 
 fission httptrigger delete --name get-air-quality-data  --ignorenotfound --verbosity=0;
 fission function delete --name get-air-quality-data --ignorenotfound --verbosity=0;
 
+fission function delete --name get-all-from-index --ignorenotfound --verbosity=0;
+fission httptrigger delete --name get-all-from-index --ignorenotfound --verbosity=0;
+
+fission function delete --name get-sentiment-weather-query --ignorenotfound --verbosity=0;
+fission httptrigger delete --name get-sentiment-weather-query --ignorenotfound --verbosity=0;
+
+### Package Delete
 fission package delete -f --name backend --ignorenotfound --verbosity=0;
 

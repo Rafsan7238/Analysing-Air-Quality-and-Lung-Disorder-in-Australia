@@ -11,9 +11,6 @@ fission function create --name health --pkg backend --env python --entrypoint ut
 
 fission route create --url /health --function health --name health --createingress --verbosity=0;
 
-### INDEX CREATION
-
-
 ### BOM HARVESTER PACKAGE
 (   cd backend/harvesters/BOM/;   zip -r addobservations.zip .;   mv addobservations.zip ../; )
 fission package create --sourcearchive backend/harvesters/addobservations.zip  --env python  --name addobservations  --buildcmd './build.sh' --verbosity=0;
@@ -54,4 +51,11 @@ fission fn create --name get-all-from-index --pkg backend --env python --entrypo
   fission route create --name get-all-from-index --function get-all-from-index \
     --method GET \
     --url '/data/{index}/all' --verbosity=0;
+)
+
+fission fn create --name get-sentiment-weather-query --pkg backend --env python --entrypoint "backend.sentiment_weather_queries_endpoint" --verbosity=0;
+(
+  fission route create --name get-sentiment-weather-query --function get-sentiment-weather-query \
+    --method GET \
+    --url '/data/sentiment_weather/{resource}' --verbosity=0;
 )
