@@ -1,37 +1,33 @@
-from flask import current_app, request
-#from 
 from mastodon import Mastodon
-import json, time
-from elasticsearch8 import Elasticsearch
-from elasticsearch8 import helpers
+import time
+from elasticsearch8 import Elasticsearch, helpers
+import pytz
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from datetime import datetime, timedelta, tzinfo
 
-def parse_json(msgs):
-    new_msgs = []
-    keys = ['content', 'created_at', 'id']
-    current_app.logger.info('creating analyzer')
-    analyzer = SentimentIntensityAnalyzer()
+def parse_json(msg, analyzer):
+    new_msg = {}
 
-    for msg in msgs: 
-        new_msg = {}
-        for key in keys:
-            if key == "created_at":
-                raw_date = msg.get(key)
-                if raw_date:
-                    date = raw_date[0:19]
-                    new_msg[key] = date
-                else:
-                    new_msg[key] = None
-            else:
-                new_msg[key] = msg.get(key)
-        try:
-            current_app.logger.info('analyzing')
-            new_msg['sentiment'] = analyzer.polarity_scores(new_msg['content']).get('compound')
-        except:
-            current_app.logger.info('failed analyzer')
-            new_msg['sentiment'] = 0
-        new_msgs.append(new_msg)
-    return new_msgs
+    new_msg['id'] = msg['id']
+
+    raw_date = msg.get('created_at')
+    if raw_date:
+        new_msg['created_at'] = str(raw_date)[0:19]                    
+        year = str(raw_date)[2:4]
+        month = str(raw_date)[5:7]
+        day = str(raw_date)[8:10]
+        new_msg['date'] = f'{day}/{month}/{year}'
+    else:
+        new_msg['created_at'] = None
+
+    new_msg['content'] = msg['content']
+    
+    try:
+        new_msg['sentiment'] = analyzer.polarity_scores(new_msg['content']).get('compound')
+    except:
+        new_msg['sentiment'] = 0
+
+    return new_msg
 
 
 def generate_docs(msgs):
@@ -39,19 +35,30 @@ def generate_docs(msgs):
         msg['_index'] = 'mastodon_observations'
         yield msg
 
-def main():
+def insert_observation_batch(elastic_client, observation_batch, analyzer):
+    inserts = []
+    for entry in observation_batch:
+        parsed_msg = parse_json(entry, analyzer)
+        inserts.append(parsed_msg)
     
+    helpers.bulk(elastic_client, inserts, index='mastodon_observations')
+            
+def ingest(recents_only = True):
+    print('mharvester invoked')
     elastic_client = Elasticsearch (
         'https://elasticsearch-master.elastic.svc.cluster.local:9200',
         verify_certs= False,
-        basic_auth=('elastic', 'elastic')
+        basic_auth=('elastic', 'elastic'),
+        request_timeout=30
     )
 
     m = Mastodon(
         api_base_url=f'https://mastodon.au'
     )
 
+    analyzer = SentimentIntensityAnalyzer()
 
+    print('fetching most recent id from index')
     # get latest ID
     page = elastic_client.search(
     index='mastodon_observations',
@@ -72,34 +79,60 @@ def main():
     )
     
     doc = page['hits']['hits']
-    # 
-    current_app.logger.info(f' Returned Query: {doc}')               
 
-    if len(doc)>0:
-        val = doc[0]
-        current_app.logger.info(f'getting ID from {val["_id"]}')
-        lastid = val['_id']
+    max_id = None
+    since_id = None
+    utc = pytz.UTC
+    if recents_only:
+        print('fetching recents only')
+        since_date = datetime.now() - timedelta(minutes=5)
+        if len(doc)>0:
+            val = doc[0]
+            since_id = val['_id']
     else:
-        current_app.logger.info(f'pinging latest record for id')
-        # Get the ID of the lastid status main the public timeline
-        lastid= m.timeline(timeline='public', since_id=None, limit=1, remote=True)[0]['id']
-        time.sleep(5)
+        print('fetching old')
+        since_date = datetime.now() - timedelta(days=5) # a random post on 15/05/2024
 
-    msg = json.loads(json.dumps(m.timeline(timeline='public', since_id=lastid, limit=100, remote=True), default=str))
-    parsed_msgs = parse_json(msg)
+        query = """
+            SELECT created_at, id FROM mastodon_observations
+            ORDER BY created_at ASC LIMIT 1
+        """
+        response = elastic_client.sql.query(query=query, format='json', fetch_size=5000)
+        oldest_doc = response['rows'][0]
+        print(oldest_doc)
+        print(f'continuing retrieval of old data from {oldest_doc[0]}')
+        max_id = oldest_doc[1]
 
-    current_app.logger.info(f'Got {len(parsed_msgs)} messages')
+    since_date = since_date.replace(tzinfo=utc)
+    done = False
+    while not done:
+        print(f'fetching toots with since_id:{since_id}, max_id:{max_id}, and up_to:{since_date}')
+        # Returns toots more recent than since_id, less recent than max_id
+        toots = m.timeline(timeline='public', since_id=since_id, max_id=max_id, limit=2000, remote=True)
+        to_add = []
+        if len(toots) == 0:
+            done = True
+        for observation in toots:
+            created_at = observation['created_at'].replace(tzinfo=utc)
+            if created_at < since_date:
+                done = True
+                break
+            else:
+                to_add.append(observation)
 
-    for msg in parsed_msgs:
-        # helpers.bulk(elastic_client, generate_docs(parsed_msgs))
-        res = elastic_client.index(
-                        index='mastodon_observations',
-                        id=f"{msg['id']}",
-                        body=msg
-                    )
+        insert_observation_batch(elastic_client, to_add, analyzer)
         
+        print(f'Toots had oldest date {created_at} and oldest id {max_id}')
+        max_id = toots[-1]['id']
+
+    print('function ending')
     return 'ok'
-                
+
+def main():
+    return ingest()
+    
+def catch_up_history():
+    return ingest(recents_only=False)                
 
 
 if __name__ == '__main__':

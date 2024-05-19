@@ -27,7 +27,7 @@ fission timer create --name mastodon-harvester-repeater --function mharvester --
 fission fn create --name create-indexes --pkg backend --env python --entrypoint "backend.create_indexes_endpoint" --fntimeout 360 --verbosity=0;
 fission route create --method POST --url "/indexes/create/all" --function create-indexes --name create-indexes --createingress --verbosity=0;
 
-fission fn create --name insert-documents --pkg backend --env python --entrypoint "backend.insert_documents" --fntimeout 120 --verbosity=0;
+fission fn create --name insert-documents --pkg backend --env python --entrypoint "backend.insert_documents" --fntimeout 360 --verbosity=0;
 (
   fission route create --name insert-documents --function insert-documents \
     --method POST \

@@ -1,5 +1,7 @@
 import json
 from flask import request, jsonify
+from harvesters.BOM import addobservations
+from harvesters.Mastodon import mharvester
 from constants import *
 from elastic_client_provider import get_bulker, get_client
 
@@ -90,6 +92,10 @@ def insert_documents():
             res = ingestion.temperature.insert(es, bulker, data, TEMPERATURE_TASMANIA)
         elif index == STATIONS: 
             res = ingestion.stations.insert(es, bulker, data)
+        elif index == BOM_OBSERVATIONS:
+            res = addobservations.catch_up_history()
+        elif index == MASTODON:
+            res = mharvester.catch_up_history()
         else:
             return "Index not found", 404
         return f"{res}", 201
@@ -194,6 +200,8 @@ def sentiment_weather_queries_endpoint():
     try:
         if resource == AVG_MONTHLY_ANALYSIS:
             return jsonify({'result': get_averaged_by_month(es)}), 200
+        if resource == UPDATING_ANALYSIS:
+            return jsonify({'result': get_recent_averaged_by_daily(es)}), 200
         else:
             return jsonify({'Resource in headers is not valid': resource}), 400
         
