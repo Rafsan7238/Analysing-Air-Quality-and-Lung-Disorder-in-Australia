@@ -59,7 +59,7 @@ Note that this notebook can only upload data to the static file indexes. Therefo
 There are two regularly updating data sources. Mastodon, and BOM (Bureau of Meteorology). These data sources are regularly added to via fission functions triggered by timers. The Mastodon set is updated every 5 minutes, the BOM set is updated every 15 minutes.
 
 ### Analytics
-There are two notebooks for requesting data from elastic search and displaying analytics. (Rafsan and Ojawsi to write this section.)
+There are two notebooks for requesting data from elastic search and displaying comprehensive statistical analytics. As the names suggest, "Air Quality vs Lung Disease Analysis.ipynb" provides the correlation analysis related to air quality, mainly PM2.5, and lung-related disorders in Victoria, while "Weather vs Sentiment Analysis.ipynb" contains the analysis related to the correlation between weather parameters and people's mood in Australia. Both the notebooks follow a storytelling format for easy comprehension of the analyses for the users. 
 
 ## Development
 To upload any backend changes, run `sh publish_backend.sh` in the root directory of this project. This will:
