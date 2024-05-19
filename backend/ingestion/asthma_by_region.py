@@ -14,17 +14,15 @@ def insert(es, bulker, data):
         inserts = []
         for _, row in data.items():
             insert = {
-                'create': {
-                    'gccsa_code': row['gccsa_code'],
-                    'gccsa_name': row['gccsa_name'],
-                    'total asthma': row['Total asthma'],
-                    'employed asthma': row['Employed asthma'],
-                    'australian asthma': row['Australian asthma'],
-                    'total copd': row['Total COPD'],
-                    'australian copd': row['Australian COPD'],
-                    'foreigner asthma': row['Foreigner asthma'],
-                    'foreigner copd': row['Foreigner COPD']
-                }
+                'gccsa_code': row['gccsa_code'],
+                'gccsa_name': row['gccsa_name'],
+                'total asthma': row['Total asthma'],
+                'employed asthma': row['Employed asthma'],
+                'australian asthma': row['Australian asthma'],
+                'total copd': row['Total COPD'],
+                'australian copd': row['Australian COPD'],
+                'foreigner asthma': row['Foreigner asthma'],
+                'foreigner copd': row['Foreigner COPD']
             }
             inserts.append(insert)
         

@@ -14,13 +14,11 @@ def insert(es, bulker, data):
         inserts = []
         for entry in data['entries']:
             insert = {
-                'create': {
-                    'day': entry['day'],
-                    'month': entry['month'],
-                    'year': entry['year'],
-                    'total_sentiment': entry['total_sentiment'],
-                    'total_tweets': entry['total_tweets']
-                }
+                'day': entry['day'],
+                'month': entry['month'],
+                'year': entry['year'],
+                'total_sentiment': entry['total_sentiment'],
+                'total_tweets': entry['total_tweets']
             }
             inserts.append(insert)
         

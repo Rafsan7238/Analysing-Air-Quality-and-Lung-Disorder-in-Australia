@@ -6,22 +6,25 @@ def create_air_quality_hourly_average(es_client):
         body = {
             "settings": {
                 "index": {
-                    "number_of_shards": 3, # 765202 rows, deserves multiple shards
+                    "number_of_shards": 3,
                     "number_of_replicas": 1
                 }
             },
             "mappings": {
+                "dynamic": "strict",
                 "properties": {
-                    "date": {"type": "keyword"},
+                    "date": {
+                        "type": "date",
+                        "format": "dd/MM/yy"
+                    },                    
                     "latitude": {"type": "double"},
-                    "location": {"type": "geo_point"},
                     "location_name": {"type": "keyword"},
                     "longitude": {"type": "double"},
-                    "parameter_description": {"type": "text"},
+                    "parameter_description": {"type": "keyword"},
                     "parameter_method_name": {"type": "keyword"},
                     "parameter_name": {"type": "keyword"},
                     "time": {"type": "keyword"},
-                    "value": { "type": "double"}
+                    "value": { "type": "float"}
                     }
                 }
         }

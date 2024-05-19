@@ -8,6 +8,7 @@ def create_temperature_index(es_client, index_name):
                 }
             },
             "mappings": {
+                "dynamic": "strict",
                 "properties": {
                     "Bureau of Meteorology station number": {
                         "type": "long"

@@ -1,8 +1,16 @@
 import json
-from flask import request
+from flask import request, jsonify
+from harvesters.BOM import addobservations
+from harvesters.Mastodon import mharvester
 from constants import *
 from elastic_client_provider import get_bulker, get_client
 
+from querying.sentiment_weather_queries import *
+from querying.air_quality_analysis_queries import *
+from querying.query_path_constants import *
+from querying.make_query import make_query
+
+from index_creation.create_station_index import create_station_index
 from index_creation.create_bom_index import create_bom_index
 from index_creation.create_mastodon_index import create_mastodon_index
 from index_creation.create_mortality_index import create_mortality_index
@@ -12,16 +20,18 @@ from index_creation.create_census_g21b import create_census_g21b
 from index_creation.create_rainfall_index import create_rainfall_index
 from index_creation.create_asthma_by_region_index import create_asthma_by_region_index
 from index_creation.create_historic_tweets_index import create_historic_tweets_index
+from index_creation.create_station_index import create_station_index
 
 import ingestion.historic_tweet_sentiments 
 import ingestion.asthma_by_region 
 import ingestion.air_quality_hourly_avg 
 import ingestion.census_g21b
 import ingestion.rainfall
+import ingestion.stations
 import ingestion.temperature
 import ingestion.mortality
 
-def insert_indexes():
+def insert_documents():
     try: 
         print('starting')
 
@@ -80,6 +90,12 @@ def insert_indexes():
             res = ingestion.temperature.insert(es, bulker, data, TEMPERATURE_SYDNEY)
         elif index == TEMPERATURE_TASMANIA: 
             res = ingestion.temperature.insert(es, bulker, data, TEMPERATURE_TASMANIA)
+        elif index == STATIONS: 
+            res = ingestion.stations.insert(es, bulker, data)
+        elif index == BOM_OBSERVATIONS:
+            res = addobservations.catch_up_history()
+        elif index == MASTODON:
+            res = mharvester.catch_up_history()
         else:
             return "Index not found", 404
         return f"{res}", 201
@@ -119,7 +135,92 @@ def create_indexes_endpoint():
 
         results[MASTODON] = create_mastodon_index(es)
         results[BOM_OBSERVATIONS] = create_bom_index(es)
-    
+        results[STATIONS] = create_station_index(es)
+
         return json.dumps(results), 201
     except Exception as e:
         return json.dumps(str(e)), 500
+
+###############################
+
+def select_all_from_index():
+    try:
+        index = request.headers['X-Fission-Params-Index']
+    except KeyError:
+        return jsonify({'Index not found in headers': str(request.headers)}), 400
+    
+    es = get_client()
+
+    if index == AIR_QUALITY_HOURLY_AVG:
+        return jsonify({'result': "Select all is not allowed for this index"}), 400
+    
+    query = f"""
+        SELECT * FROM {index}
+    """
+
+    try:
+        return jsonify({'result': make_query(es, query)}), 200
+    except Exception as e:
+        return json.dumps(str(e)), 500
+
+def air_quality_endpoint():
+    try:
+        resource = request.headers['X-Fission-Params-Resource']
+
+    except KeyError:
+        return jsonify({'Resource not found in headers': str(request.headers)}), 400
+
+    es = get_client()
+    
+    try:
+        if resource == SUMMARY_STATS_BY_PARAM:
+            return jsonify({'result': get_air_quality_hourly_summary_stats_by_parameter(es)}), 200
+        elif resource == SUMMARY_STATS_BY_LOC:
+            return jsonify({'result': get_air_quality_hourly_summary_stats_by_location(es)}), 200
+        elif resource == DATA_DIST:
+            return jsonify({'result': get_air_quality_data_dist(es)}), 200
+        elif resource == FOR_STATISTICAL_ANALYSIS:
+            return jsonify({'result': get_air_quality_hourly_for_statistical(es)}), 200
+        elif resource == FOR_SPATIAL_ANALYSIS:
+            return jsonify({'result': get_air_quality_hourly_for_spatial(es)}), 200
+        else:
+            return jsonify({'Resource in headers is not valid': resource}), 400
+    except Exception as e:
+        return json.dumps(str(e)), 500
+
+def sentiment_weather_queries_endpoint():
+    try:
+        resource = request.headers['X-Fission-Params-Resource']
+
+    except KeyError:
+        return jsonify({'Resource not found in headers': str(request.headers)}), 400
+
+    es = get_client()
+    
+    try:
+        if resource == AVG_MONTHLY_ANALYSIS:
+            return jsonify({'result': get_averaged_by_month(es)}), 200
+        if resource == UPDATING_ANALYSIS:
+            return jsonify({'result': get_recent_averaged_by_daily(es)}), 200
+        else:
+            return jsonify({'Resource in headers is not valid': resource}), 400
+        
+    except Exception as e:
+        return json.dumps(str(e)), 500
+
+def make_query_endpoint():
+    es = get_client()
+
+    try:
+        data = request.json
+    except KeyError:
+        return 'failed to parse request json body', 400
+
+    try:
+        if data is not None:
+            res = make_query(es, data['query'])
+            return jsonify({'result': res}), 200
+        else:
+            return jsonify({'result': 'No data in body'}), 400
+    except Exception as e:
+        return jsonify({"Query failed": str(e)}), 500

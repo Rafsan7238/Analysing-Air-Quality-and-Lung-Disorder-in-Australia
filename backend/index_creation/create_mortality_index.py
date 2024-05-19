@@ -8,6 +8,7 @@ def create_mortality_index(es_client, mortality_index_name):
                 }
             },
             "mappings": {
+                "dynamic": "strict",
                 "properties": {
                     "all_cancer_population": {
                         "type": "long"

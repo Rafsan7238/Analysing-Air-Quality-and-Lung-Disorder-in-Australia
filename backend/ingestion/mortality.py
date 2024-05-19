@@ -12,15 +12,13 @@ def insert(es, bulker, data, index_name):
         inserts = []
         for _, row in data.items():
             insert = {
-                'create': {
-                    "all_cancer_population": row['all_cancer_population'],
-                    "all_cancer_total_mortality": row['all_cancer_total_mortality'],
-                    "gccsa_code": row['gccsa_code'],
-                    "gccsa_name": row['gccsa_name'],
-                    "lung_cancer_population": row['lung_cancer_population'],
-                    "lung_cancer_rate_per_100k": row['lung_cancer_rate_per_100k'],
-                    "lung_cancer_total_mortality": row['lung_cancer_total_mortality']
-                }
+                "all_cancer_population": row['all_cancer_population'],
+                "all_cancer_total_mortality": row['all_cancer_total_mortality'],
+                "gccsa_code": row['gccsa_code'],
+                "gccsa_name": row['gccsa_name'],
+                "lung_cancer_population": row['lung_cancer_population'],
+                "lung_cancer_rate_per_100k": row['lung_cancer_rate_per_100k'],
+                "lung_cancer_total_mortality": row['lung_cancer_total_mortality']
             }
             inserts.append(insert)
             

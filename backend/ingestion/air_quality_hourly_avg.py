@@ -15,17 +15,15 @@ def insert(es, bulker, data):
         inserts = []
         for _, row in data.items():
             insert = {
-                'create': {
-                    'date': row['date'],
-                    'time': row['time'],
-                    'location_name': row['location_name'],
-                    'latitude': row['latitude'],
-                    'longitude': row['longitude'],
-                    'value': row['value'],
-                    'parameter_name': row['parameter_name'],
-                    'parameter_method_name': row['parameter_method_name'],
-                    'parameter_description': row['parameter_description']
-                }
+                'date': row['date'],
+                'time': row['time'],
+                'location_name': row['location_name'],
+                'latitude': row['latitude'],
+                'longitude': row['longitude'],
+                'value': row['value'],
+                'parameter_name': row['parameter_name'],
+                'parameter_method_name': row['parameter_method_name'],
+                'parameter_description': row['parameter_description']
             }
             inserts.append(insert)
         print('inserts made')

@@ -11,6 +11,7 @@ def create_census_g21b(es_client):
                 }
             },
             "mappings": {
+                "dynamic": "strict",
                 "properties": {
                     "assistance_needed_asthma": {
                     "type": "long"

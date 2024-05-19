@@ -11,6 +11,7 @@ def create_asthma_by_region_index(es_client):
                 }
             },
             "mappings": {
+                "dynamic": "strict",
                 "properties": {
                     'gccsa_code': {"type": "text"},
                     'gccsa_name': {"type": "text"},

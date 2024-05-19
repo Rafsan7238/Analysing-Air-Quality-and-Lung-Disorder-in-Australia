@@ -25,3 +25,5 @@ backend/harvesters/mharvester.zip
 backend/__pycache__/__init__.cpython-311.pyc
 backend/__pycache__/constants.cpython-311.pyc
 backend/__pycache__/elastic_client_provider.cpython-311.pyc
+backend/querying/__pycache__/make_query.cpython-311.pyc
+backend/querying/__pycache__/query_path_constants.cpython-311.pyc
