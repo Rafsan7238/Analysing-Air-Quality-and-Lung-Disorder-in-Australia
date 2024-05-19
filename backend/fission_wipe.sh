@@ -7,7 +7,7 @@
 
 # Wipe fission state
 ### Health
-fission function delete --name health --ignorenotfound --verbosity=0 ;
+fission function delete --name health --ignorenotfound --verbosity=0;
 fission httptrigger delete --name health --ignorenotfound --verbosity=0;
 
 ### Observation
