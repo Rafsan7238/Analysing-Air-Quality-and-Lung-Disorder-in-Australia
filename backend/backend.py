@@ -4,6 +4,8 @@ from harvesters.BOM import addobservations
 from harvesters.Mastodon import mharvester
 from constants import *
 from elastic_client_provider import get_bulker, get_client
+import time
+from datetime import datetime
 
 from querying.sentiment_weather_queries import *
 from querying.air_quality_analysis_queries import *
@@ -164,6 +166,9 @@ def select_all_from_index():
         return json.dumps(str(e)), 500
 
 def air_quality_endpoint():
+    start = time.time()
+    print(f'Function invoked at {datetime.now()}')
+
     try:
         resource = request.headers['X-Fission-Params-Resource']
 
@@ -171,22 +176,26 @@ def air_quality_endpoint():
         return jsonify({'Resource not found in headers': str(request.headers)}), 400
 
     es = get_client()
-    
+
+    result = None
     try:
         if resource == SUMMARY_STATS_BY_PARAM:
-            return jsonify({'result': get_air_quality_hourly_summary_stats_by_parameter(es)}), 200
+            result = jsonify({'result': get_air_quality_hourly_summary_stats_by_parameter(es)}), 200
         elif resource == SUMMARY_STATS_BY_LOC:
-            return jsonify({'result': get_air_quality_hourly_summary_stats_by_location(es)}), 200
+            result = jsonify({'result': get_air_quality_hourly_summary_stats_by_location(es)}), 200
         elif resource == DATA_DIST:
-            return jsonify({'result': get_air_quality_data_dist(es)}), 200
+            result = jsonify({'result': get_air_quality_data_dist(es)}), 200
         elif resource == FOR_STATISTICAL_ANALYSIS:
-            return jsonify({'result': get_air_quality_hourly_for_statistical(es)}), 200
+            result = jsonify({'result': get_air_quality_hourly_for_statistical(es)}), 200
         elif resource == FOR_SPATIAL_ANALYSIS:
-            return jsonify({'result': get_air_quality_hourly_for_spatial(es)}), 200
+            result = jsonify({'result': get_air_quality_hourly_for_spatial(es)}), 200
         else:
-            return jsonify({'Resource in headers is not valid': resource}), 400
+            result = jsonify({'Resource in headers is not valid': resource}), 400
     except Exception as e:
-        return json.dumps(str(e)), 500
+        result = json.dumps(str(e)), 500
+
+    print(f'Time taken: {time.time() - start}')
+    return result
 
 def sentiment_weather_queries_endpoint():
     try:
