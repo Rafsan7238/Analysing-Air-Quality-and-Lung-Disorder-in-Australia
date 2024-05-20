@@ -27,3 +27,4 @@ backend/__pycache__/constants.cpython-311.pyc
 backend/__pycache__/elastic_client_provider.cpython-311.pyc
 backend/querying/__pycache__/make_query.cpython-311.pyc
 backend/querying/__pycache__/query_path_constants.cpython-311.pyc
+frontend/__pycache__/api.cpython-311.pyc

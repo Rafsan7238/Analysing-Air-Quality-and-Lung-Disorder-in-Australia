@@ -32,7 +32,6 @@ def dataframe_from_url_ext(ext):
     if response.status_code == 200:
         # Parse JSON response
         res_json = response.json()['result']
-        print(res_json)
         return pd.DataFrame(res_json['rows'], columns=res_json['columns'])
     else:
         raise Exception(f"Failed to retrieve data. Status code: {response.status_code}. Content: {response.content}")
