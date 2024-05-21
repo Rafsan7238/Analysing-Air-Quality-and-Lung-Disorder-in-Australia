@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, tzinfo
 def parse_json(msg, analyzer):
     new_msg = {}
 
-    new_msg['id'] = msg['id']
+    new_msg['id'] = msg.get('id')
 
     raw_date = msg.get('created_at')
     if raw_date:
@@ -20,10 +20,10 @@ def parse_json(msg, analyzer):
     else:
         new_msg['created_at'] = None
 
-    new_msg['content'] = msg['content']
+    new_msg['content'] = msg.get('content')
     
     try:
-        new_msg['sentiment'] = analyzer.polarity_scores(new_msg['content']).get('compound')
+        new_msg['sentiment'] = analyzer.polarity_scores(new_msg.get('content')).get('compound')
     except:
         new_msg['sentiment'] = 0
 
