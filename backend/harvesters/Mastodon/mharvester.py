@@ -90,7 +90,8 @@ def ingest(recents_only = True, max_id = None):
         since_date = datetime.now().replace(tzinfo=utc) - timedelta(minutes=5)
         if len(doc)>0:
             val = doc[0]
-            since_id = val['_id']
+            print(val)
+            since_id = val['_source']['id']
     else:
         print('backfilling old')
         since_date = datetime.now().replace(tzinfo=utc) - timedelta(days=5) # a random post on 15/05/2024
@@ -104,12 +105,12 @@ def ingest(recents_only = True, max_id = None):
         oldest_doc = response['rows'][0]
         print(oldest_doc)
         print(f'continuing retrieval of old data from {oldest_doc[0]}')
-        max_id = 112475922112584533 #oldest_doc[1]
+        max_id = max_id if max_id else oldest_doc[1]
 
     since_date = since_date.replace(tzinfo=utc)
     done = False
     while not done:
-        print(f'fetching toots with since_id:{since_id}, max_id:{max_id}, and up_to:{since_date}')
+        print(f'fetching toots with since_id:{since_id}, max_id:{max_id}, and since the date:{since_date}')
         # Returns toots more recent than since_id, less recent than max_id
         toots = m.timeline(timeline='public', since_id=since_id, max_id=max_id, limit=100)
         to_add = []
@@ -132,7 +133,7 @@ def ingest(recents_only = True, max_id = None):
 
         if toots and len(toots) > 0:
             max_id = toots[-1]['id']
-            print(f'Toots had oldest date {created_at} and oldest id {max_id}')
+            print(f'Toots had oldest date {created_at} and largest id {max_id}')
         else:
             print(f'toots was empty')
 

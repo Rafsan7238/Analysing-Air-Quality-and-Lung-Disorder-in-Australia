@@ -210,7 +210,9 @@ def sentiment_weather_queries_endpoint():
         if resource == AVG_MONTHLY_ANALYSIS:
             return jsonify({'result': get_averaged_by_month(es)}), 200
         if resource == UPDATING_ANALYSIS:
-            return jsonify({'result': get_recent_averaged_by_daily(es)}), 200
+            return jsonify({'result': get_recent_averaged_sentiment_by_hourly(es)}), 200
+        if resource == MESSAGE_COUNTS_HOURLY:
+            return jsonify({'result': get_recent_total_sentiment_by_hourly(es)}), 200
         else:
             return jsonify({'Resource in headers is not valid': resource}), 400
         
