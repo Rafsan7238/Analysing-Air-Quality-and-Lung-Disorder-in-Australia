@@ -5,7 +5,7 @@ from constants import *
 from querying.make_query import make_query
 import numpy as np
 
-def get_recent_averaged_by_daily(es):
+def get_recent_averaged_sentiment_by_hourly(es):
     data_start = datetime(2024, 5, 17, tzinfo=UTC)
     joined = {}
 
@@ -26,7 +26,7 @@ def get_recent_averaged_by_daily(es):
     query = f"""    
         SELECT    
             HISTOGRAM(created_at, INTERVAL 1 HOUR) as hour,
-            SUM(sentiment) as avg_sentiment
+            SUM(sentiment) as sum_sentiment
         FROM {MASTODON}
         WHERE sentiment <> 0.0 
         GROUP BY hour 
@@ -38,7 +38,44 @@ def get_recent_averaged_by_daily(es):
                 joined[hour][2] = avg_sent
 
     rows = [[hour]+stats for hour, stats in joined.items()]
-    columns = ['hour', 'average air temp', 'total rainfall', 'average sentiment']
+    columns = ['hour', 'average air temp', 'total rainfall', 'sum sentiment']
+    return {'columns': columns, 'rows': rows }
+
+
+def get_recent_total_sentiment_by_hourly(es):
+    data_start = datetime(2024, 5, 17, tzinfo=UTC)
+    joined = {}
+
+    query = f"""    
+        SELECT    
+            HISTOGRAM(DATETIME_PARSE(aifstime_utc,'yyyyMMddHHmmss'), INTERVAL 1 HOUR) as hour,
+                AVG(air_temp) as air_temp,
+                SUM(rain_trace) as total_rain
+        
+        FROM {BOM_OBSERVATIONS}
+        GROUP BY hour
+    """
+    weather_rows = make_query(es, query)['rows']
+    for hour, avg_temp, total_rain in weather_rows:
+        if datetime.strptime(hour, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=UTC) >=  data_start:
+            joined[hour] = joined.get(hour, [avg_temp, total_rain, 0])
+
+    query = f"""    
+        SELECT    
+            HISTOGRAM(created_at, INTERVAL 1 HOUR) as hour,
+            SUM(1) as message_count
+        FROM {MASTODON}
+        WHERE sentiment <> 0.0 
+        GROUP BY hour 
+    """
+    sentiment_rows = make_query(es, query)['rows']
+    for hour, avg_sent in sentiment_rows:
+        if datetime.strptime(hour, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=UTC) >=  data_start:  
+            if hour in joined.keys():
+                joined[hour][2] = avg_sent
+
+    rows = [[hour]+stats for hour, stats in joined.items()]
+    columns = ['hour', 'average air temp', 'total rainfall', 'message counts']
     return {'columns': columns, 'rows': rows }
 
 
