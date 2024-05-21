@@ -7,3 +7,6 @@ AVG_MONTHLY_ANALYSIS = 'avg_monthly_analysis'
 UPDATING_ANALYSIS = 'updateing_analysis'
 MESSAGE_COUNTS_HOURLY = 'message_counts_hourly'
 COB_CANCER_MERGE = "persons_merged_with_COB"
+PREVALENCE_BY_LOCATION = "prevalence_by_location"
+CANCER_BY_GENDER = "cancer_by_gender"
+PM_AND_DISEASE_BY_INNER_OUTER_MELB = "PM_and_disease_by_inner_outer_melbourne"

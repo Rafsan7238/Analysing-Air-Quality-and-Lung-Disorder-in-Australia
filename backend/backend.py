@@ -192,6 +192,12 @@ def air_quality_endpoint():
             result = jsonify({'result': get_air_quality_hourly_for_spatial(es)}), 200
         elif resource == COB_CANCER_MERGE:
             result = jsonify({'result': get_cob_merge_lung_cancer(es)}), 200
+        elif resource == PREVALENCE_BY_LOCATION:
+            result = jsonify({'result': get_prevalence_by_location(es)}), 200
+        elif resource == CANCER_BY_GENDER:
+            result = jsonify({'result': get_cancer_by_gender(es)}), 200
+        elif resource == PM_AND_DISEASE_BY_INNER_OUTER_MELB:
+            result = jsonify({'result': get_PM_and_disease_by_greater_or_regional(es)}), 200
         else:
             result = jsonify({'Resource in headers is not valid': resource}), 400
     except Exception as e:
