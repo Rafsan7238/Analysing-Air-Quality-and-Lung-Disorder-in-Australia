@@ -41,9 +41,9 @@ def insert_observation_batch(elastic_client, observation_batch, analyzer):
         parsed_msg = parse_json(entry, analyzer)
         inserts.append(parsed_msg)
     
-    helpers.bulk(elastic_client, inserts, index='mastodon_observations')
+    print(helpers.bulk(elastic_client, inserts, index='mastodon_observations'))
             
-def ingest(recents_only = True):
+def ingest(recents_only = True, max_id = None):
     print('mharvester invoked')
     elastic_client = Elasticsearch (
         'https://elasticsearch-master.elastic.svc.cluster.local:9200',
@@ -82,16 +82,19 @@ def ingest(recents_only = True):
 
     max_id = None
     since_id = None
+    created_at = None
+    toots = []
     utc = pytz.UTC
     if recents_only:
         print('fetching recents only')
-        since_date = datetime.now() - timedelta(minutes=5)
+        since_date = datetime.now().replace(tzinfo=utc) - timedelta(minutes=5)
         if len(doc)>0:
             val = doc[0]
             since_id = val['_id']
     else:
-        print('fetching old')
-        since_date = datetime.now() - timedelta(days=5) # a random post on 15/05/2024
+        print('backfilling old')
+        since_date = datetime.now().replace(tzinfo=utc) - timedelta(days=5) # a random post on 15/05/2024
+        since_date = since_date.replace(tzinfo=utc)
 
         query = """
             SELECT created_at, id FROM mastodon_observations
@@ -101,29 +104,37 @@ def ingest(recents_only = True):
         oldest_doc = response['rows'][0]
         print(oldest_doc)
         print(f'continuing retrieval of old data from {oldest_doc[0]}')
-        max_id = oldest_doc[1]
+        max_id = 112475922112584533 #oldest_doc[1]
 
     since_date = since_date.replace(tzinfo=utc)
     done = False
     while not done:
         print(f'fetching toots with since_id:{since_id}, max_id:{max_id}, and up_to:{since_date}')
         # Returns toots more recent than since_id, less recent than max_id
-        toots = m.timeline(timeline='public', since_id=since_id, max_id=max_id, limit=2000, remote=True)
+        toots = m.timeline(timeline='public', since_id=since_id, max_id=max_id, limit=100)
         to_add = []
-        if len(toots) == 0:
+
+        if not toots and len(toots) == 0:
+            print('no toots retrieved')
             done = True
+
         for observation in toots:
             created_at = observation['created_at'].replace(tzinfo=utc)
             if created_at < since_date:
+                print(f'since date {since_date} has been reached by toot at {created_at}. Ending loop')
                 done = True
                 break
             else:
                 to_add.append(observation)
 
-        insert_observation_batch(elastic_client, to_add, analyzer)
-        
-        print(f'Toots had oldest date {created_at} and oldest id {max_id}')
-        max_id = toots[-1]['id']
+        if len(to_add) > 0:
+            insert_observation_batch(elastic_client, to_add, analyzer)
+
+        if toots and len(toots) > 0:
+            max_id = toots[-1]['id']
+            print(f'Toots had oldest date {created_at} and oldest id {max_id}')
+        else:
+            print(f'toots was empty')
 
     print('function ending')
     return 'ok'
@@ -131,8 +142,9 @@ def ingest(recents_only = True):
 def main():
     return ingest()
     
-def catch_up_history():
-    return ingest(recents_only=False)                
+def catch_up_history(data):
+    max_id = data['max_id']
+    return ingest(recents_only=False, max_id=max_id)                
 
 
 if __name__ == '__main__':

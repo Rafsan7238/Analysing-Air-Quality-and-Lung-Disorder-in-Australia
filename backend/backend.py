@@ -97,7 +97,7 @@ def insert_documents():
         elif index == BOM_OBSERVATIONS:
             res = addobservations.catch_up_history()
         elif index == MASTODON:
-            res = mharvester.catch_up_history()
+            res = mharvester.catch_up_history(data)
         else:
             return "Index not found", 404
         return f"{res}", 201

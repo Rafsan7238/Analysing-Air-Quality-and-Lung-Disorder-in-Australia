@@ -11,31 +11,34 @@ def get_recent_averaged_by_daily(es):
 
     query = f"""    
         SELECT    
-            "date" as "date", 
-            AVG(air_temp) as "average air temp", 
-            SUM(rain_trace) as "total rainfall"
+            HISTOGRAM(DATETIME_PARSE(aifstime_utc,'yyyyMMddHHmmss'), INTERVAL 1 HOUR) as hour,
+                AVG(air_temp) as air_temp,
+                SUM(rain_trace) as total_rain
+        
         FROM {BOM_OBSERVATIONS}
-        GROUP BY "date"
+        GROUP BY hour
     """
     weather_rows = make_query(es, query)['rows']
-    for date, avg_temp, total_rain in weather_rows:
-        if datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=UTC) >=  data_start:
-            joined[date] = joined.get(date, [avg_temp, total_rain, 0])
+    for hour, avg_temp, total_rain in weather_rows:
+        if datetime.strptime(hour, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=UTC) >=  data_start:
+            joined[hour] = joined.get(hour, [avg_temp, total_rain, 0])
 
     query = f"""    
         SELECT    
-            "date" as "date", 
-            AVG(sentiment) as "average sentiment"
+            HISTOGRAM(created_at, INTERVAL 1 HOUR) as hour,
+            SUM(sentiment) as avg_sentiment
         FROM {MASTODON}
-        GROUP BY "date"
+        WHERE sentiment <> 0.0 
+        GROUP BY hour 
     """
     sentiment_rows = make_query(es, query)['rows']
-    for date, avg_sent in sentiment_rows:
-        if datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=UTC) >=  data_start:  
-            joined[date][2] = avg_sent
+    for hour, avg_sent in sentiment_rows:
+        if datetime.strptime(hour, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=UTC) >=  data_start:  
+            if hour in joined.keys():
+                joined[hour][2] = avg_sent
 
-    rows = [[date]+stats for date, stats in joined.items()]
-    columns = ['date', 'average air temp', 'total rainfall', 'average sentiment']
+    rows = [[hour]+stats for hour, stats in joined.items()]
+    columns = ['hour', 'average air temp', 'total rainfall', 'average sentiment']
     return {'columns': columns, 'rows': rows }
 
 

@@ -70,21 +70,7 @@ def get_air_quality_data_dist(es):
         SUM(1) as row_count
         FROM air_quality_hourly_avg 
             WHERE parameter_name = 'PM2.5' 
-            AND location_name in ('Melbourne CBD', 'Geelong South', 'Bendigo', 'Dandenong', 'Footscray', 'Box Hill', 'Brighton')
         GROUP BY location_name
     """
-    location_counts_major = make_query(es, query)
-
-    query = """
-    SELECT 
-    'Others' as location_name,
-    SUM(1) as row_count
-    FROM air_quality_hourly_avg 
-        WHERE parameter_name = 'PM2.5' 
-        AND location_name not in ('Melbourne CBD', 'Geelong South', 'Bendigo', 'Dandenong', 'Footscray', 'Box Hill', 'Brighton')
-    """
-    location_counts_other = make_query(es, query)
-
-    all_rows = location_counts_other['rows'] + location_counts_major['rows']
-    result = {'columns': location_counts_major['columns'], 'rows': all_rows}
+    return make_query(es, query)
     return result
