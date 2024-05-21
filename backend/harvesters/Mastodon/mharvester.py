@@ -90,7 +90,8 @@ def ingest(recents_only = True, max_id = None):
         since_date = datetime.now().replace(tzinfo=utc) - timedelta(minutes=5)
         if len(doc)>0:
             val = doc[0]
-            since_id = val['_id']
+            print(val)
+            since_id = val['_source']['id']
     else:
         print('backfilling old')
         since_date = datetime.now().replace(tzinfo=utc) - timedelta(days=5) # a random post on 15/05/2024
