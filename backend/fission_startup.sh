@@ -20,14 +20,14 @@ fission timer create --name bom-harvester-repeater --function addobservations --
 ### MASTODON HARVESTER
 (   cd backend/harvesters/Mastodon/;   zip -r mharvester.zip .;   mv mharvester.zip ../; )
 fission package create --sourcearchive backend/harvesters/mharvester.zip  --env python  --name mharvester  --buildcmd './build.sh' --verbosity=0;
-fission fn create --name mharvester  --pkg mharvester  --env python  --entrypoint "mharvester.main" --fntimeout 3600 --verbosity=0;
+fission fn create --name mharvester  --pkg mharvester  --env python  --entrypoint "mharvester.main" --fntimeout 360 --verbosity=0;
 fission timer create --name mastodon-harvester-repeater --function mharvester --cron "@every 5m" --verbosity=0;
 
 ### Index Management
 fission fn create --name create-indexes --pkg backend --env python --entrypoint "backend.create_indexes_endpoint" --fntimeout 360 --verbosity=0;
 fission route create --method POST --url "/indexes/create/all" --function create-indexes --name create-indexes --createingress --verbosity=0;
 
-fission fn create --name insert-documents --pkg backend --env python --entrypoint "backend.insert_documents" --fntimeout 36000 --verbosity=0;
+fission fn create --name insert-documents --pkg backend --env python --entrypoint "backend.insert_documents" --fntimeout 360 --verbosity=0;
 (
   fission route create --name insert-documents --function insert-documents \
     --method POST \

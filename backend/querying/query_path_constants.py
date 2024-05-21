@@ -6,3 +6,4 @@ FOR_SPATIAL_ANALYSIS = 'spatial_analysis'
 AVG_MONTHLY_ANALYSIS = 'avg_monthly_analysis'
 UPDATING_ANALYSIS = 'updateing_analysis'
 MESSAGE_COUNTS_HOURLY = 'message_counts_hourly'
+COB_CANCER_MERGE = "persons_merged_with_COB"

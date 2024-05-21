@@ -1,4 +1,26 @@
+from constants import *
 from querying.make_query import make_query
+import pandas as pd
+
+def get_cob_merge_lung_cancer(es):
+    query = f"""
+        SELECT * FROM {MORTALITY_PERSONS}
+    """
+    print('querying persons')
+    persons_json = make_query(es, query)
+    persons_df = pd.DataFrame(persons_json['rows'], columns=persons_json['columns'])
+
+    query = f"""
+        SELECT * FROM {ASTHMA_BY_REGION_INDEX_NAME}
+    """
+    print('querying asthma')
+
+    asthma_by_region = make_query(es, query)
+    asthma_by_region_df = pd.DataFrame(asthma_by_region['rows'], columns=asthma_by_region['columns'])
+    merged_data = persons_df.merge(asthma_by_region_df, how='inner', on=['gccsa_code', 'gccsa_name'])
+    merged_data_json = merged_data.to_dict(orient='split')
+    return {'columns': list(merged_data_json['columns']), 'rows': list(merged_data_json['data'])}
+
 
 def get_air_quality_hourly_for_spatial(es):
     query = """
@@ -73,4 +95,3 @@ def get_air_quality_data_dist(es):
         GROUP BY location_name
     """
     return make_query(es, query)
-    return result

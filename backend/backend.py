@@ -156,6 +156,7 @@ def select_all_from_index():
     if index == AIR_QUALITY_HOURLY_AVG:
         return jsonify({'result': "Select all is not allowed for this index"}), 400
     
+    
     query = f"""
         SELECT * FROM {index}
     """
@@ -189,6 +190,8 @@ def air_quality_endpoint():
             result = jsonify({'result': get_air_quality_hourly_for_statistical(es)}), 200
         elif resource == FOR_SPATIAL_ANALYSIS:
             result = jsonify({'result': get_air_quality_hourly_for_spatial(es)}), 200
+        elif resource == COB_CANCER_MERGE:
+            result = jsonify({'result': get_cob_merge_lung_cancer(es)}), 200
         else:
             result = jsonify({'Resource in headers is not valid': resource}), 400
     except Exception as e:
